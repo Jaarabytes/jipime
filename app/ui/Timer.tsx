@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 export default function Timer () {
     // Timer is 20 minutes, counts down from there
-    const [remainingTime, setRemainingTime] = useState(20 * 60);
+    const [remainingTime, setRemainingTime] = useState(60 * 20);
     useEffect(() => {
         const intervalId = setInterval(() => {
             if (remainingTime > 0) {
@@ -15,7 +15,7 @@ export default function Timer () {
             }
         }, 1000) //update each second
         return () => clearInterval(intervalId);
-    }, [])
+    }, [remainingTime])
     const minutes = Math.floor( remainingTime/ 60 );
     const seconds = remainingTime % 60;
     return (

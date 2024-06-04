@@ -1,5 +1,5 @@
 import Age from "@/app/ui/home/Age"
-
+import Upvote from "@/app/ui/home/Donate"
 export default function HomePage() {
   return (
     <>
@@ -19,6 +19,7 @@ export default function HomePage() {
           <p className="text-lg my-5 text-lg">Create a conducive environment around you by getting rid of all the noise surrounding you.</p>
         </div>
         <Age />
+        <Upvote />
       </div>
     </>
   )

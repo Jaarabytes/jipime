@@ -5,7 +5,7 @@ export default function Result () {
 
     return (
         <>
-            <div className="text-center">
+            <div className="text-center" style={{minHeight: "100vh"}}>
                 {/* display IQ results here */}
                 {/* replace <this> with relevant values */}
                 <h2 className="font-bold text-xl">Your IQ was measured to be</h2>

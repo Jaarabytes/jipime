@@ -12,7 +12,8 @@ export default function Age() {
         <>
             <h3 className="my-5 text-lg">Please select your age: </h3>
             {ages.map((element, index) => (
-                <form className="sm:inline p-5" key={index}>
+                // change the form action for the mpesa lipa form
+                <form className="sm:inline p-5" key={index} action="/api/calculator" method="POST">
                     <button
                     onClick={startTest}
                     className="bg-red-800 px-5 py-3 rounded-lg text-white hover:bg-red-600">{element.age}</button>

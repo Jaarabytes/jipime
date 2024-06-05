@@ -40,12 +40,6 @@ export default function TrueFalse () {
       });
     const [ response, setResponse ] = useState(null);
 
-    // initialize all questions to false since useState() is stupid. I'm switching to svelte
-    // const initialFormData = questions.reduce((acc, question, index) => {
-    //     acc[`question-${index}`] = 'False';
-    //     return acc;
-    // }, {})
-
     const handleChange = (e: any) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({...prevData, [name]: value }))

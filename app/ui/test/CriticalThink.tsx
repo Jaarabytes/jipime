@@ -5,20 +5,22 @@ export default function CriticalThink () {
     // yes, I am against you
     return (
         <>
-            {questions.map((element, index) => (
-                <div key={index} className="my-4">
-                    <form>
-                    <p>{index + 1}. <span className="mx-4">{element.question}</span></p>
-                            <div className="mx-5">
-                                {element.options.map((elem, ind) => (
-                                    <div key={index}>
-                                        <label className="block"><input type="radio" name="pickoption" className="mx-2" value="True"></input>{elem}</label>
-                                    </div>
-                                ))}
-                            </div>
-                    </form>
-                </div>
-            ))}
+            <div className="m-5">
+                {questions.map((element, index) => (
+                    <div key={index} className="my-4">
+                        <form>
+                        <p className="my-3">{index + 1}. <span className="mx-4">{element.question}</span></p>
+                                <div className="mx-5">
+                                    {element.options.map((elem, ind) => (
+                                        <div key={index}>
+                                            <label className="block"><input type="radio" name="pickoption" className="mx-2" value="True"></input>{elem}</label>
+                                        </div>
+                                    ))}
+                                </div>
+                        </form>
+                    </div>
+                ))}
+            </div>
         </>
     )
 }

@@ -11,12 +11,6 @@ export default function Age() {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        // if ( !ageValue ){
-        //     alert("Please select your age")
-        //     return;
-        // }
-       
-
     try {
         // sending age data to calculator function
         const response = await fetch("/api/calculator", {

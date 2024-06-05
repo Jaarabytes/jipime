@@ -12,8 +12,8 @@ export default function Age() {
         e.preventDefault();
 
     try {
-        // sending age data to calculator function
-        const response = await fetch("/api/calculator", {
+        // sending age data to age function
+        const response = await fetch("/api/age", {
             method: "POST",
             headers: {"Content-Type": 'application/json'},
             body: JSON.stringify({selectedAge: ageValue})

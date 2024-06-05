@@ -20,7 +20,7 @@ export default function Timer () {
     const seconds = remainingTime % 60;
     return (
         <>
-            <div>{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, "0")}</div>
+            <div className="text-3xl m-5 text-center">{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, "0")}</div>
         </>
     )
 }

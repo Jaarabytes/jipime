@@ -1,21 +1,20 @@
 'use client'
-// import { useRouter } from "next/router";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export default function Age() {
-    // Submit the age to add points according to the age
     const router = useRouter();
-    const startTest = (age: string) => {
-        router.push(`/test?age=${age}`)
+    const startTest = () => {
+        router.push('/test');
     }
-    const ages = [{name: "child" , age: "16<"},{name: "not old", age: "18-50"}, {name: "old", age: "51-60"},{name: "older", age: "61+"}];
+    // If name == true, add 2-3 points on IQ, if not, sorry for him
+    const ages = [{name:true , age: "16<"},{name: false, age: "18-50"}, {name: false, age: "51-60"},{name: true, age: "61+"}];
     return (
         <>
             <h3 className="my-5 text-lg">Please select your age: </h3>
             {ages.map((element, index) => (
                 <form className="sm:inline p-5" key={index}>
                     <button
-                    onClick={(() => startTest(`${element.name}`))}
+                    onClick={startTest}
                     className="bg-red-800 px-5 py-3 rounded-lg text-white hover:bg-red-600">{element.age}</button>
                 </form>
             ))}

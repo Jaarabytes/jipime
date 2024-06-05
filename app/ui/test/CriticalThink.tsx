@@ -5,14 +5,14 @@ export default function CriticalThink () {
     return (
         <>
             <div className="m-5">
-                <form id="critical-think" action="/api/calculator" method="POST">
+                <form id="critical-think" action="/api/test-three" method="POST">
                     {questions.map((element, index) => (
                         <div key={index} className="my-4">
                             <p className="my-3">{index + 1}. <span className="mx-4">{element.question}</span></p>
                                     <div className="mx-5">
                                         {element.options.map((elem, ind) => (
-                                            <div key={index}>
-                                                <label className="block"><input type="radio" name={`question-${index + 1}`} className="mx-2" value="True"></input>{elem}</label>
+                                            <div key={ind}>
+                                                <label className="block"><input type="radio" name={`question-${index + 1}`} className="mx-2" value={`${elem}`}></input>{elem}</label>
                                             </div>
                                         ))}
                                     </div>
@@ -20,7 +20,6 @@ export default function CriticalThink () {
                     ))}
                 <button className="text-center m-5 text-xl bg-blue-900 text-white rounded-lg px-5 py-3 hover:bg-blue-700"
                 type="submit"
-                // This should submit axios to calculator
                 >Next <MdOutlineKeyboardArrowRight className="w-6 inline" /></button>
                 </form>
             </div>

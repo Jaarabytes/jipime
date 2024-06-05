@@ -5,24 +5,27 @@ export default async function handler (req: NextApiRequest, res:NextApiResponse 
     if ( req.method == "POST" ) {
         let testOneScore = 0;
         console.log("The request body is", req.body);
-        // const {  } = req.body;
-        // // Simple testOneScore, delete later
-        // console.log("Values equals", values);
-        // // create an array of answers and countercheck with values provided by user
-        // const answers = [false, true, true, false, false, false, true, true, false, true];
-        // const checkValidity = (values: any, answers: boolean[]) => {
-        //     const keys = Object.keys(values)
-        //     console.log(keys);
-        //     for (let i = 0; i < Math.min(keys.length , answers.length); i++ ){
-        //         const key = keys[i];
-        //         if (values[key] == answers[i]) {
-        //             testOneScore++
-        //         }
-        //     }
-        //     console.log(testOneScore);
-        //     return testOneScore;
-        // }
-        // checkValidity(values, answers);
+        const userChoices = JSON.parse(req.body);
+        // Simple testOneScore, delete later
+        console.log("Values equals", userChoices);
+        // create an array of answers and countercheck with values provided by user
+        const answers = ["False", "True", "True", "False", "False", "False", "True", "True", "False", "True"];
+        // initialize types
+        type userChoices = {[key: string]: string};
+        type answers = string[]
+        // function to countercheck
+        const checkValidity = ( userChoices: userChoices, answers: answers ) => {
+            const values = Object.values(userChoices)
+            // console.log("Mapped into, ",values);
+            for (let i = 0; i < values.length; i++ ){
+                if (values[i] == answers[i]) {
+                    testOneScore++
+                }
+            }
+            console.log(testOneScore);
+            return testOneScore;
+        }
+        checkValidity(userChoices, answers);
     }
     else {
         res.setHeader('Allow', ["POST"]);

@@ -13,10 +13,10 @@ export default function Age() {
         <>
             <h3 className="my-5 text-lg">Please select your age: </h3>
             {ages.map((element, index) => (
-                <form className="inline p-5" key={index}>
+                <form className="sm:inline p-5" key={index}>
                     <button
                     onClick={(() => startTest(`${element.name}`))}
-                    className="bg-red-800 px-5 py-3 rounded-lg hover:bg-red-600">{element.age}</button>
+                    className="bg-red-800 px-5 py-3 rounded-lg text-white hover:bg-red-600">{element.age}</button>
                 </form>
             ))}
         </>

@@ -7,7 +7,7 @@ export default function HomePage() {
         <h1 className="text-[60px] font-bold">IQ test</h1>
         <p className="text-2xl py-5">Made by <a href="https://jaarabytes.vercel.app" className="text-red-400">Jaarabytes</a></p>
         <hr />
-        <div className="px-60 my-5">
+        <div className="sm:px-60 my-5">
           <p className="text-lg my-5">This test just tries to boost your confidence levels by guessing your IQ levels. It provides an estimate between the values 80-130,
             where 100 is the population average. This is not real, please for real IQ tests <a href="/real" 
             className="text-red-400 underline">click here</a>

@@ -1,3 +1,4 @@
+'use client'
 import { useState } from "react"
 
 export default function Loser () {
@@ -25,10 +26,12 @@ export default function Loser () {
                 
                 <form onSubmit={handleSubmit}>
                     <label className="mt-10 mb-3">Please submit your complaints below</label>
+                    <br />
                     <textarea placeholder="Submit them here and be short as possible" 
                     value={complaint}
                     onChange={(e) => setComplaint(e.target.value)}
-                    className="border-none w-96 h-72"></textarea>
+                    className="border-none w-96 h-72 text-black"></textarea>
+                    <br />
                     <button className="text-white my-5 rounded-lg p-3 bg-red-700 hover:bg-red-900" type="submit">Submit</button>
                 </form>
 

@@ -21,6 +21,7 @@
     "vercel": "^32.3.0"
   },
   "devDependencies": {
+    "@types/mailgun-js": "^0.22.18",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

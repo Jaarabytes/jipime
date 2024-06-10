@@ -1,26 +1,42 @@
 import React, { useEffect, useState } from "react";
 
+export default function Timer() {
+    const [time, setTime] = useState({ minutes: 0, seconds: 0 });
+    const [limitReached, setLimitReached] = useState(false);
 
-export default function Timer () {
-    // Timer is 20 minutes, counts down from there
-    const [remainingTime, setRemainingTime] = useState(60 * 20);
     useEffect(() => {
         const intervalId = setInterval(() => {
-            if (remainingTime > 0) {
-                // reducing time by the second
-                setRemainingTime(prevTime => prevTime - 1);
-            }
-            else {
-                clearInterval(intervalId);
-            }
-        }, 1000) //update each second
+            setTime((prevTime) => {
+                const { minutes, seconds } = prevTime;
+                if (seconds === 59) {
+                    if (minutes === 29) {
+                        setLimitReached(true);
+                        clearInterval(intervalId);
+                        return prevTime;
+                    }
+                    return { minutes: minutes + 1, seconds: 0 };
+                } else {
+                    return { ...prevTime, seconds: seconds + 1 };
+                }
+            });
+        }, 1000);
+
         return () => clearInterval(intervalId);
-    }, [remainingTime])
-    const minutes = Math.floor( remainingTime/ 60 );
-    const seconds = remainingTime % 60;
+    }, []);
+
+    const handleCloseAlert = () => setLimitReached(false);
+
     return (
         <>
-            <div className="text-3xl m-5 text-center">{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, "0")}</div>
+            <div className="text-3xl m-5 text-center">
+                {time.minutes.toString().padStart(2, '0')}:{time.seconds.toString().padStart(2, "0")}
+            </div>
+            {limitReached && (
+                <div className="alert">
+                    Time limit reached!
+                    <button onClick={handleCloseAlert}>Close</button>
+                </div>
+            )}
         </>
-    )
+    );
 }

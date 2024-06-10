@@ -26,6 +26,8 @@ export default async function handler (req: NextApiRequest, res:NextApiResponse 
             return testOneScore;
         }
         checkValidity(userChoices, answers);
+        const response = { testOneScore }
+        return res.status(200).json({response});
     }
     else {
         res.setHeader('Allow', ["POST"]);

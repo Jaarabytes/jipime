@@ -28,6 +28,8 @@ export default async function handler (req: NextApiRequest, res:NextApiResponse 
             return testThreeScore;
         }
         checkValidity(userChoices, answers);
+        const response = { testThreeScore }
+        return res.status(200).json({response});
     }
     else {
         res.setHeader('Allow', ["POST"]);

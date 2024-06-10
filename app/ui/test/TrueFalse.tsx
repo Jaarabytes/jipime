@@ -1,6 +1,10 @@
+// 'use client'
+
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useState } from "react"
+import { useRouter } from "next/navigation";
 export default function TrueFalse () {
+    const router = useRouter();
 
     // This component holds all the true or false questions of the iq test. (part 1)
     const questions = [
@@ -55,6 +59,7 @@ export default function TrueFalse () {
            })
            const data = await res.json();
            setResponse(data);
+           router.push('/test-2')
            if ( res.ok ) {
                console.log("Successfully submitted test-one")
            }

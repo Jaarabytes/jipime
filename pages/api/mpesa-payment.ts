@@ -1,12 +1,17 @@
 import { timestamp } from "@/pages/timestamp";
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
+import type { RequestExtended } from "@/pages/api/generate-token";
 // fix the below URL
-const mpesaApiUrl = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+const stkPushUrl = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
 
-export default async function handleStkPush( req: NextApiRequest, res: NextApiResponse) {
-    const { phone, amount } = req.body;
-    const BUSINESS_SHORT_CODE = process.env.BUSINESS_SHORT_CODE as string;
+// phone number and amount are empty (burp suite)
+// issue is request extended
+export default async function handler( req: RequestExtended, res: NextApiResponse) {
+    console.log("The request body is", JSON.parse(req.body))
+    const { phone, amount } = JSON.parse(req.body);
+    // add a business short code
+    const BUSINESS_SHORT_CODE = process.env.MPESA_BUSINESS_SHORT_CODE as string;
 
     const password = Buffer.from( BUSINESS_SHORT_CODE + process.env.MPESA_PASS_KEY + timestamp).toString("base64");
 
@@ -23,24 +28,18 @@ export default async function handleStkPush( req: NextApiRequest, res: NextApiRe
         AccountReference: "Jipime app",
         TransactionDesc: "Payment"
     }
-
-    // // Verify the validity of the above
-    // let accessToken;
-    // // get the access token
-
-    // if ( !accessToken ) {
-    //     return res.status(401).json({error: 'Missing access token'});
-    // }
     try {
-        const response = await axios.post( mpesaApiUrl, payload, {
+        console.log("Payload is ", payload)
+        console.log("Token is ", req.token)
+        const response = await axios.post( stkPushUrl, payload, {
             headers: {
                 Authorization: `Bearer ${req.token}`
             }
         })
         res.status(201).json({message: true, data: response.data})
     }
-    catch ( err ) {
-        console.error(err);
+    catch ( err:any ) {
+        console.error("Failed to initiate mpesa payment");
         res.status(500).json({error: "Failed to initiate mpesa payment"})
     }
 }

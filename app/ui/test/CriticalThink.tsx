@@ -1,5 +1,8 @@
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useState } from "react"
+import { useRouter } from "next/navigation";
+
+// after finish should redirect to result page
 export default function CriticalThink () {
     // Series of questions that is supposed to make you fail my test.
     // yes, I am against you
@@ -61,6 +64,8 @@ export default function CriticalThink () {
             else{
                 console.log("Error submitting test-three")
             }
+            const router = useRouter();
+            router.push('/result')
         }
         catch ( err ) {
             console.error("Error occured during test-three", err);
@@ -83,9 +88,9 @@ export default function CriticalThink () {
                                     </div>
                         </div>
                     ))}
-                <button className="text-center m-5 text-xl bg-blue-900 text-white rounded-lg px-5 py-3 hover:bg-blue-700"
+                <button className="text-center m-5 text-xl bg-red-900 text-white rounded-lg px-5 py-3 hover:bg-red-700"
                 type="submit"
-                >Next <MdOutlineKeyboardArrowRight className="w-6 inline" /></button>
+                >Finish ME !<MdOutlineKeyboardArrowRight className="w-6 inline" /></button>
                 </form>
             </div>
         </>

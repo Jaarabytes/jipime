@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 // after finish should redirect to result page
 export default function CriticalThink () {
+    const router = useRouter();
     // Series of questions that is supposed to make you fail my test.
     // yes, I am against you
     const questions = [
@@ -59,14 +60,13 @@ export default function CriticalThink () {
             })
             const data = await res.json();
             setResponse(data);
+            router.push('/result')
             if ( res.ok ){
                 console.log("Successfully submitted test-three");
             }
             else{
                 console.log("Error submitting test-three")
             }
-            const router = useRouter();
-            router.push('/result')
         }
         catch ( err ) {
             console.error("Error occured during test-three", err);

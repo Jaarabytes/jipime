@@ -4,6 +4,7 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useRouter } from "next/navigation"
 
 export default function Patterns () {
+    const router = useRouter();
     // This is the patterns part of the iq test. show patterns similar to mensa's iq test
     // Sadly patterns is off, just adding 10 random form questions again 
     // I have had a hard time drawing patterns thus delaying shipping time, sorry
@@ -56,15 +57,13 @@ export default function Patterns () {
            })
            const data = await res.json();
            setResponse(data);
+           router.push('/test-3')
            if ( res.ok ) {
                console.log("Successfully submitted test-one")
            }
            else{
                console.log("Error when submitting test-one")
            }
-           const router = useRouter();
-        //    push to critical think, test-3
-           router.push('/test-3')
        }
        catch (err) {
            console.error("error when submitting test-one", err)

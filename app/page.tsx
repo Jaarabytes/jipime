@@ -13,8 +13,9 @@ export default function HomePage() {
             className="text-red-400 underline">click here</a>
           </p>
           <p className="text-lg">
-            This test has some simple questions which you can try to complete before 20 minutes are over. You do get points for finishing the test earlier. 
-            You are also not penalised when you answer wrongly, so Harvey Dent your way through it.
+            Try to complete me before 20 minutes for extra points.<br /> 
+            You <b>do</b> get points for finishing the test earlier. <br />
+            You are also not penalised when you answer wrongly, so Harvey Dent your way through it.<br />
           </p>
           <p className="text-lg my-5 text-lg">Create a conducive environment around you by getting rid of all the noise surrounding you.</p>
         </div>

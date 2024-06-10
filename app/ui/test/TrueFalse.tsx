@@ -1,5 +1,4 @@
-// 'use client'
-
+'use client'
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useState } from "react"
 import { useRouter } from "next/navigation";

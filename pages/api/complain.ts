@@ -5,6 +5,7 @@ import mailgun from "mailgun-js"
 // declare mailgun variables
 const mg = mailgun({
     apiKey: process.env.MAILGUN_API_KEY,
+    // fix your domain
     domain: "mydomain.com"
 })
 

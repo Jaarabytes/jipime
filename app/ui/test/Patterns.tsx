@@ -1,5 +1,7 @@
+'use client'
 import { useState } from "react"
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
+import { useRouter } from "next/navigation"
 
 export default function Patterns () {
     // This is the patterns part of the iq test. show patterns similar to mensa's iq test
@@ -60,6 +62,9 @@ export default function Patterns () {
            else{
                console.log("Error when submitting test-one")
            }
+           const router = useRouter();
+        //    push to critical think, test-3
+           router.push('/test-3')
        }
        catch (err) {
            console.error("error when submitting test-one", err)

@@ -15,7 +15,7 @@ export default async function Result () {
         </>
     )
 }
-
+// the below func failed
 export async function getData () {
     const response = await fetch ("http://localhost:3000/api/total");
     const data = await response.json();

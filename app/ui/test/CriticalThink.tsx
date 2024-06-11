@@ -2,10 +2,14 @@
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useState } from "react"
 import { useRouter } from "next/navigation";
+import { useTimer } from "@/app/ui/Timer";
 
 // after finish should redirect to result page
 export default function CriticalThink () {
     const router = useRouter();
+    const { currentTime } = useTimer();
+    const minutes = Math.floor( currentTime / 60);
+    const seconds = currentTime % 60 
     // Series of questions that is supposed to make you fail my test.
     // yes, I am against you
     const questions = [
@@ -75,6 +79,11 @@ export default function CriticalThink () {
 
     return (
         <>
+            <div className="text-3xl m-5 text-center">
+                {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, "0")}
+            </div>
+
+            
             <div className="m-5">
                 <form id="critical-think" onSubmit={handleSubmit}>
                     {questions.map((element, index) => (

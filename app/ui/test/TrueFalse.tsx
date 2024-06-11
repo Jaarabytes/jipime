@@ -2,8 +2,13 @@
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useState } from "react"
 import { useRouter } from "next/navigation";
+import { useTimer } from "@/app/ui/Timer";
+
 export default function TrueFalse () {
     const router = useRouter();
+    const { currentTime } = useTimer();
+    const minutes = Math.floor( currentTime / 60);
+    const seconds = currentTime % 60 
 
     // This component holds all the true or false questions of the iq test. (part 1)
     const questions = [
@@ -74,6 +79,11 @@ export default function TrueFalse () {
     // have a function in calculator that checks and keeps score
     return (
         <>
+            <div className="text-3xl m-5 text-center">
+                {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, "0")}
+            </div>
+
+
             <div className="m-5">
                 <form id="true-false" onSubmit={handleSubmit}>
                     {questions.map((element, index) => (

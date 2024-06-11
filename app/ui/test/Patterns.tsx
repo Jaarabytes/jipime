@@ -2,9 +2,13 @@
 import { useState } from "react"
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useRouter } from "next/navigation"
+import { useTimer } from "@/app/ui/Timer";
 
 export default function Patterns () {
     const router = useRouter();
+    const { currentTime } = useTimer();
+    const minutes = Math.floor( currentTime / 60);
+    const seconds = currentTime % 60 
     // This is the patterns part of the iq test. show patterns similar to mensa's iq test
     // Sadly patterns is off, just adding 10 random form questions again 
     // I have had a hard time drawing patterns thus delaying shipping time, sorry
@@ -73,6 +77,11 @@ export default function Patterns () {
     // have a function in calculator that checks and keeps score
     return (
         <>
+            <div className="text-3xl m-5 text-center">
+                {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, "0")}
+            </div>
+
+            
             <div className="m-5">
                 <form id="true-false" onSubmit={handleSubmit}>
                     {questions.map((element, index) => (

@@ -1,11 +1,13 @@
 'use client'
 import { useState } from "react"
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
-import { useRouter } from "next/navigation"
 import { useTimer } from "@/app/ui/Timer";
 
-export default function Patterns () {
-    const router = useRouter();
+interface PatternsProps {
+    onNext: () => void;
+}
+
+export const Patterns: React.FC<PatternsProps> = ({ onNext }) => {
     const { currentTime } = useTimer();
     const minutes = Math.floor( currentTime / 60);
     const seconds = currentTime % 60 
@@ -61,7 +63,7 @@ export default function Patterns () {
            })
            const data = await res.json();
            setResponse(data);
-           router.push('/test-3')
+           onNext();
            if ( res.ok ) {
                console.log("Successfully submitted test-one")
            }
@@ -73,15 +75,13 @@ export default function Patterns () {
            console.error("error when submitting test-one", err)
        }
    } 
-    // add a next button that submits all answers at once to calculator
-    // have a function in calculator that checks and keeps score
     return (
         <>
             <div className="text-3xl m-5 text-center">
                 {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, "0")}
             </div>
 
-            
+
             <div className="m-5">
                 <form id="true-false" onSubmit={handleSubmit}>
                     {questions.map((element, index) => (
@@ -101,3 +101,4 @@ export default function Patterns () {
         </>
     )
 }
+export default Patterns;

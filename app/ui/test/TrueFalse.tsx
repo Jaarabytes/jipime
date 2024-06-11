@@ -1,11 +1,13 @@
 'use client'
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useState } from "react"
-import { useRouter } from "next/navigation";
 import { useTimer } from "@/app/ui/Timer";
 
-export default function TrueFalse () {
-    const router = useRouter();
+interface TrueFalseProps {
+    onNext: () => void;
+}
+
+export const TrueFalse: React.FC<TrueFalseProps> = ({ onNext }) => {
     const { currentTime } = useTimer();
     const minutes = Math.floor( currentTime / 60);
     const seconds = currentTime % 60 
@@ -63,7 +65,7 @@ export default function TrueFalse () {
            })
            const data = await res.json();
            setResponse(data);
-           router.push('/test-2')
+           onNext();
            if ( res.ok ) {
                console.log("Successfully submitted test-one")
            }
@@ -103,3 +105,4 @@ export default function TrueFalse () {
         </>
     )
 }
+export default TrueFalse;

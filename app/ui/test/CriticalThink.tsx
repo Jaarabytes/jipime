@@ -1,9 +1,10 @@
 'use client'
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useState } from "react"
-import { useRouter } from "next/navigation";
 import { useTimer } from "@/app/ui/Timer";
+import { useRouter } from "next/navigation";
 
+// Sadly, onNext() isn't here, from here the user gets their result
 // after finish should redirect to result page
 export default function CriticalThink () {
     const router = useRouter();
@@ -64,6 +65,7 @@ export default function CriticalThink () {
             })
             const data = await res.json();
             setResponse(data);
+            // push the user to result page
             router.push('/result')
             if ( res.ok ){
                 console.log("Successfully submitted test-three");
@@ -83,7 +85,7 @@ export default function CriticalThink () {
                 {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, "0")}
             </div>
 
-            
+
             <div className="m-5">
                 <form id="critical-think" onSubmit={handleSubmit}>
                     {questions.map((element, index) => (

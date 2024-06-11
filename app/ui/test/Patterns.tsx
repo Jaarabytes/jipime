@@ -4,7 +4,7 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useTimer } from "@/app/ui/Timer";
 
 interface PatternsProps {
-    onNext: () => void;
+    onNext: (data: any) => void;
 }
 
 export const Patterns: React.FC<PatternsProps> = ({ onNext }) => {
@@ -55,25 +55,7 @@ export const Patterns: React.FC<PatternsProps> = ({ onNext }) => {
    
    const handleSubmit = async (e: any) => {
        e.preventDefault();
-       try {
-           const res = await fetch ("/api/test-two", {
-               method: "POST",
-               headers: { "Application-Type": "JSON"} ,
-               body: JSON.stringify(formData)
-           })
-           const data = await res.json();
-           setResponse(data);
-           onNext();
-           if ( res.ok ) {
-               console.log("Successfully submitted test-one")
-           }
-           else{
-               console.log("Error when submitting test-one")
-           }
-       }
-       catch (err) {
-           console.error("error when submitting test-one", err)
-       }
+       onNext(formData);
    } 
     return (
         <>

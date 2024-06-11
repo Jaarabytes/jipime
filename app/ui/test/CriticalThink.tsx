@@ -4,9 +4,11 @@ import { useState } from "react"
 import { useTimer } from "@/app/ui/Timer";
 import { useRouter } from "next/navigation";
 
-// Sadly, onNext() isn't here, from here the user gets their result
-// after finish should redirect to result page
-export default function CriticalThink () {
+interface CriticalThinkProps {
+    onNext : (data: any) => void;
+}
+
+export const CriticalThink: React.FC<CriticalThinkProps> = ({ onNext }) => {
     const router = useRouter();
     const { currentTime } = useTimer();
     const minutes = Math.floor( currentTime / 60);
@@ -56,27 +58,7 @@ export default function CriticalThink () {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-
-        try {
-            const res = await fetch("/api/test-three", {
-                method: "POST",
-                headers: {"Application-type": "JSON"},
-                body: JSON.stringify(formData)
-            })
-            const data = await res.json();
-            setResponse(data);
-            // push the user to result page
-            router.push('/result')
-            if ( res.ok ){
-                console.log("Successfully submitted test-three");
-            }
-            else{
-                console.log("Error submitting test-three")
-            }
-        }
-        catch ( err ) {
-            console.error("Error occured during test-three", err);
-        }
+        onNext(formData);
     }
 
     return (
@@ -108,3 +90,4 @@ export default function CriticalThink () {
         </>
     )
 }
+export default CriticalThink;

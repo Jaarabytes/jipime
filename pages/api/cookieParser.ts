@@ -9,7 +9,7 @@ export interface Cookies {
 export function parseCookies(headers: IncomingHttpHeaders): Cookies {
     const cookies : Cookies = {};
 
-    if ( headers.cookie ) {
+    if ( headers && headers.cookie ) {
         const parsedCookies = parse(headers.cookie);
         for ( const [key, value] of Object.entries(parsedCookies) ) {
             cookies[key] = value;

@@ -1,12 +1,15 @@
 
-import { MongoClient } from "mongodb";
-import mongoose from "mongoose";
+import mongoose, { Schema , model, models } from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
-const uri = process.env.MONGO_URI;
+const uri: string = process.env.MONGO_URI as string;
 
 // set up a mongoose schema
 const userSchema = new mongoose.Schema({
-    initialIQ : {
+    userId : {
+        type: String,
+        unique: true
+    },
+    starterIQ : {
         type: Number
     },
     testOneScore: {
@@ -20,7 +23,18 @@ const userSchema = new mongoose.Schema({
     },
 })
 
-mongoose.model('User', userSchema);
+const User = models.user || model('User', userSchema);
+export { User }
+
+export async function connectToDatabase () {
+    if ( mongoose.connection.readyState >= 1 ) {
+        return;
+    }
+    return mongoose.connect( uri, {
+        // useNewUrlParser: true,
+        // useUnifiedTopology: true
+    })
+}
 
 // Set up a connection to the mongodb database
 export default async function handler ( req: NextApiRequest, res: NextApiResponse ) {
@@ -29,8 +43,7 @@ export default async function handler ( req: NextApiRequest, res: NextApiRespons
         return res.status(500).json({message: "Mongo db uri isn't here"})
     }
     try {
-        const client = await MongoClient.connect(uri);
-        const db = client.db('jipime');
+        await connectToDatabase();
         res.status(200).json({ message: "Successfully connected to mognodb"})
     }
     catch ( err ) {

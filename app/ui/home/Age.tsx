@@ -12,7 +12,7 @@ export default function Age() {
         const existingUserId = Cookies.get('userId');
         if ( !existingUserId ) {
             const newUserId = generateUserId();
-            Cookies.set('userId', newUserId, { expires: 14 })
+            Cookies.set('userId', newUserId)
         }
     }, []);
     const userId = Cookies.get('userId')

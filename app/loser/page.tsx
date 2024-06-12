@@ -3,22 +3,6 @@ import { useState } from "react"
 
 export default function Loser () {
     const [ complaint, setComplaint ] = useState('')
-    const handleSubmit = async ( e:any ) => {
-        e.preventDefault();
-
-        const response = await fetch('/api/complain' , {
-            method: "POST",
-            headers: {"Application-type": "json"},
-            body: JSON.stringify({complaint})
-        });
-        if ( response.ok ) {
-            alert('Complaint submitted succesfully');
-            setComplaint('');
-        }
-        else {
-            alert("Failed to submit complaint")
-        }
-    }
     return (
         <>
         {/* Make me responsive for mobile phones */}

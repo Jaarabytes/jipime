@@ -1,8 +1,6 @@
 // Create another TS file to store chartjs and its intricacies
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase, User } from "./connect";
-import { parseCookies } from "@/pages/api/cookieParser";
-import { Cookies } from "@/pages/api/cookieParser";
 // Here we calculate IQ buddy
 
 export default async function handler( req: NextApiRequest, res: NextApiResponse) {

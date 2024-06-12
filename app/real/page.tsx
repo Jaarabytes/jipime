@@ -7,7 +7,7 @@ export default function RealPage() {
 
     return (
         <>
-            <div className="px-5 my-5">
+            <div className="px-5 my-5" style={{minHeight: "100vh"}}>
                 <p>Here is a list of some good IQ tests (They are not better than <a href="/" 
                 className="text-red-400 underline">jipime</a>, however they inspired me)</p>
                 <div className="px-5">

@@ -3,37 +3,45 @@ import mongoose, { Schema , model, models } from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
 const uri: string = process.env.MONGO_URI as string;
 
+interface IUser {
+    userId?: String,
+    starterIQ?: Number,
+    testOneScore?: Number,
+    testTwoScore?: Number,
+    testThreeScore?: Number,    
+} 
+
 // set up a mongoose schema
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema<IUser>({
     userId : {
         type: String,
         unique: true
     },
     starterIQ : {
-        type: Number
+        type: Number,
+        default: 0
     },
     testOneScore: {
-        type: Number
+        type: Number,
+        default: 0
     },
     testTwoScore: {
-        type: Number
+        type: Number,
+        default: 0
     },
     testThreeScore: {
-        type: Number
+        type: Number,
+        default: 0
     },
 })
 
-const User = models.user || model('User', userSchema);
-export { User }
+const User = models.User || model<IUser>('User', userSchema);
 
-export async function connectToDatabase () {
+async function connectToDatabase () {
     if ( mongoose.connection.readyState >= 1 ) {
         return;
     }
-    return mongoose.connect( uri, {
-        // useNewUrlParser: true,
-        // useUnifiedTopology: true
-    })
+    return mongoose.connect( uri )
 }
 
 // Set up a connection to the mongodb database
@@ -51,3 +59,4 @@ export default async function handler ( req: NextApiRequest, res: NextApiRespons
         res.status(500).json({error: "Failed to connect to mongo db"})
     }
 }
+export { connectToDatabase, User }

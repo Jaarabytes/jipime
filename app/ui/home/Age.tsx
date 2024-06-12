@@ -1,13 +1,26 @@
 'use client'
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import Cookies from 'js-cookie'
+import { v4 as uuidv4 } from 'uuid';
+const generateUserId = () => {
+    return uuidv4();
+}
 export default function Age() {
+    //acquire the userId if exists, if not create new one
+    useEffect(() => {
+        const existingUserId = Cookies.get('userId');
+        if ( !existingUserId ) {
+            const newUserId = generateUserId();
+            Cookies.set('userId', newUserId, { expires: 14 })
+        }
+    }, []);
+    const userId = Cookies.get('userId')
     // handling client-side redirect
     const router = useRouter();
     // age-selection is necessary for extra points uwu
     const [ ageValue, setAgeValue ] = useState(false);
-     
+    // generate random id and store it as cookie
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
@@ -16,7 +29,7 @@ export default function Age() {
         const response = await fetch("/api/age", {
             method: "POST",
             headers: {"Content-Type": 'application/json'},
-            body: JSON.stringify({selectedAge: ageValue})
+            body: JSON.stringify({selectedAge: ageValue, userId: userId})
         })
         // if successful, user starts the test
         if (response.ok) {

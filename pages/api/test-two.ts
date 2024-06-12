@@ -37,8 +37,21 @@ export default async function handler (req: NextApiRequest, res:NextApiResponse 
         }
         checkValidity(userChoices, answers);
         const response = { testTwoScore }
-        await User.updateOne({ userId }, { $set: { testTwoScore: response.testTwoScore } }, { new: true });
-        return res.status(200).json({response});
+         // find user and update testTwoScore
+         try {
+            const user = await User.findOneAndUpdate({userId}, {testTwoScore: response.testTwoScore}, {new: true})
+            if ( user ) {
+                return res.status(200).json({message: "User updated successfully"});
+            }
+            else {
+                return res.status(404).json({message: "User not found"})
+            }
+
+        }
+        catch ( err ) {
+            console.log("Error occured when submitting test-two", err);
+            return res.status(500).json({error : "Internal server error"})
+        }
     }
     else {
         res.setHeader('Allow', ["POST"]);

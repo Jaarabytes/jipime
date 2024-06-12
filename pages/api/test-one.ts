@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase, User } from "./connect";
-import { parseCookies } from "./cookieParser";
-import { Cookies } from "./cookieParser";
+import { parseCookies, Cookies } from "./cookieParser";
 // computation for test one of the exams
 // True False is part one of the test
 export default async function handler (req: NextApiRequest, res:NextApiResponse ){
@@ -26,7 +25,6 @@ export default async function handler (req: NextApiRequest, res:NextApiResponse 
         // function to countercheck
         const checkValidity = ( userChoices: userChoices, answers: answers ) => {
             const values = Object.values(userChoices)
-            // console.log("Mapped into, ",values);
             for (let i = 0; i < values.length; i++ ){
                 if (values[i] == answers[i]) {
                     testOneScore++
@@ -39,8 +37,20 @@ export default async function handler (req: NextApiRequest, res:NextApiResponse 
         const response = { testOneScore }
         console.log("The response is ", response)
         // find user and update testOneScore
-        // const user = await User.findOneAndUpdate({userId}, {testOneScore: response.testOneScore}, {new: true})
-        await User.updateOne({ userId }, { $set: { testOneScore: response.testOneScore } }, { new: true });
+        try {
+            const user = await User.findOneAndUpdate({userId}, {testOneScore: response.testOneScore}, {new: true})
+            if ( user ) {
+                return res.status(200).json({message: "User updated successfully"});
+            }
+            else {
+                return res.status(404).json({message: "User not found"})
+            }
+
+        }
+        catch ( err ) {
+            console.log("Error occured when submitting test-one", err);
+            return res.status(500).json({error : "Internal server error"})
+        }
     }
     else {
         res.setHeader('Allow', ["POST"]);

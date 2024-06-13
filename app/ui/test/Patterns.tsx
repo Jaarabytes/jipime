@@ -65,6 +65,7 @@ export const Patterns: React.FC<PatternsProps> = ({ onNext }) => {
 
 
             <div className="m-5">
+                <h1 className="text-2xl">Test 2/3</h1>
                 <form id="true-false" onSubmit={handleSubmit}>
                     {questions.map((element, index) => (
                         <div key={index} className="my-4">

@@ -69,6 +69,7 @@ export const CriticalThink: React.FC<CriticalThinkProps> = ({ onNext }) => {
 
 
             <div className="m-5">
+                <h1 className="text-2xl">Test 3/3</h1>
                 <form id="critical-think" onSubmit={handleSubmit}>
                     {questions.map((element, index) => (
                         <div key={index} className="my-4">

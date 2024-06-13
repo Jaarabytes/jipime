@@ -1,4 +1,4 @@
-import { timestamp } from "@/pages/timestamp";
+import { timestamp } from "./timestamp";
 import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { RequestExtended } from "@/pages/api/generate-token";

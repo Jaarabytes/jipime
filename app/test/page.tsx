@@ -3,10 +3,10 @@ import TrueFalse from "@/app/ui/test/TrueFalse"
 import { TimerProvider } from "@/app/ui/Timer"
 import { AppProps } from "next/app"
 
-export default function Test({Component, pageProps}: AppProps) {
+export default function Test() {
     return (
         <TimerProvider>
-            <TrueFalse {...pageProps} />
+            <TrueFalse />
         </TimerProvider>
     )
 }

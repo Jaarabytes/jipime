@@ -37,18 +37,9 @@ export default async function handler (req: NextApiRequest, res:NextApiResponse 
                 console.log("The percentile is", percentile)
                 return percentile;
             }
-            // calculating deviation
-            const calculateDeviation = (iq: number) => {
-                const mean = 100;
-                const standardDeviation = 15;
-                const deviation = ( iq - mean )/standardDeviation;
-                console.log("The deviation is", deviation)
-                return deviation;
-            }
             console.log(iq);
             const percentile = calculatePercentile(iq)
-            const deviation = calculateDeviation(iq);
-            return res.status(200).json({iq: iq, deviation: deviation, percentile: percentile});
+            return res.status(200).json({iq: iq, percentile: percentile});
         }
         catch ( err ) {
             console.log("error when fetching user's results", err);

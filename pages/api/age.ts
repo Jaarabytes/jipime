@@ -6,7 +6,7 @@ import { connectToDatabase, User } from "./connect";
 export default async function handler( req: NextApiRequest, res: NextApiResponse) {
     if ( req.method == "POST" ) {
         await connectToDatabase();
-        let starterIQ = 100;
+        let starterIQ = 0;
         const { selectedAge, userId } = req.body;
         console.log(req.body)
 

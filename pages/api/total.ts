@@ -1,35 +1,30 @@
 import { NextApiRequest, NextApiResponse } from "next";
-
+import { connectToDatabase, User } from "./connect";
+import { parseCookies, Cookies } from "./cookieParser";
 export default async function handler (req: NextApiRequest, res:NextApiResponse ){
-//  here the total and final computation is done   
-
-// fetch initial IQ and test-IQ's
-// also, factor in time
-    fetchIQScores();
-    // deal with the timer component
-    // return something, this is to be fixed
-}
-
-async function fetchIQScores () {
-    try {
-        const [ initialIQ, score1, score2, score3 ] = await Promise.all([
-            // fetch initial IQ
-            fetch('http://localhost:3000/api/age').then(response => response.json()),
-            // fetch score from test-one
-            fetch('http://localhost:3000/api/test-one').then(response => response.json()),
-            // fetch score from test-two
-            fetch('http://localhost:3000/api/test-two').then(response => response.json()),
-            // fetch score from test-three
-            fetch('http://localhost:3000/api/test-three').then(response => response.json())
-        ]);
-        console.log('Initial IQ:', initialIQ);
-        console.log('Test One Score:', score1);
-        console.log('Test Two Score:', score2);
-        console.log('Test Three Score:', score3);
-        
-        return { initialIQ, score1, score2, score3 };
+// try to implement bonus points if user completes before expected time
+// fix: user 404 when delivering results
+// add suspense library for async requests
+    if ( req.method == "GET" ) {
+        try {
+            // get cookies/userId
+            const cookies: Cookies = parseCookies(req.headers);
+            const userId = cookies.userId;
+            // connect to database
+            await connectToDatabase();
+            const user = await User.findOne({userId}, { projection: { starterIQ: 1, testOneScore: 1, testTwoScore: 1, testThreeScore: 1 } });
+            if ( !user ) {
+                return res.status(404).json({message: "User not found"})
+            }
+            return res.status(200).json({message: "results are here"});
+        }
+        catch ( err ) {
+            console.log("error when fetching user's results", err);
+            return res.status(500).json({error: "Internal server error"})
+        }
     }
-    catch ( err ) {
-        console.error("Error when fetching data from endpoints", err);
+    else {
+        res.setHeader('Allow', ['GET']);
+        res.status(405).end(`Method ${req.method} not allowed`)
     }
 }

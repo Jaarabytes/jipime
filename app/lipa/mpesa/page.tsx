@@ -1,8 +1,10 @@
 'use client'
-import { useState, useEffect } from "react";
+import LoadingModal from "@/app/ui/Loading";
+import { useState } from "react";
 import { MdKeyboardArrowUp } from "react-icons/md";
 
 export default function LipaMpesa() {
+    const [isLoading, setIsLoading] = useState(false);
     const [token, setToken] = useState(null);
     const [response, setResponse] = useState(null);
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -10,6 +12,7 @@ export default function LipaMpesa() {
     // Function that sends money
     const weka = async (e: any) => {
         e.preventDefault();
+        setIsLoading(true)
         try {
             const generateTokenResponse = await fetch('/api/generate-token', {
                 method: "POST",
@@ -44,6 +47,8 @@ export default function LipaMpesa() {
         } catch (err) {
             console.error("Error when paying", err);
             alert("Payment initiation failed");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -85,7 +90,7 @@ export default function LipaMpesa() {
                     <MdKeyboardArrowUp className="inline" /> Send <MdKeyboardArrowUp className="inline" />
                 </button>
             </form>
-            {response && <div>Response: {JSON.stringify(response)}</div>}
+            <LoadingModal isOpen={isLoading} />
         </div>
     );
 }

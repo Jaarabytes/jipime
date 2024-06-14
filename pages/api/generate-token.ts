@@ -20,8 +20,8 @@ export default async function generateToken ( req: RequestExtended, res: NextApi
             }
         });
         req.token = response.data.access_token;
-        console.log("Access token successfully generated")
-        return res.status(200).json({response: response.data})
+        console.log("Access token successfully generated", req.token)
+        return res.status(200).json({response: req.token})
     }
     catch ( err: any ) {
         console.error("Failed to generate access token");

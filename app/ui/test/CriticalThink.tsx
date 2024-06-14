@@ -1,14 +1,11 @@
 'use client'
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useState } from "react"
-import { useTimer } from "@/app/ui/Timer";
 import { useRouter } from "next/navigation";
+import { useTimer } from "@/app/ui/Timer";
 
-interface CriticalThinkProps {
-    onNext : (data: any) => void;
-}
-
-export const CriticalThink: React.FC<CriticalThinkProps> = ({ onNext }) => {
+// after finish should redirect to result page
+export default function CriticalThink () {
     const router = useRouter();
     const { currentTime } = useTimer();
     const minutes = Math.floor( currentTime / 60);
@@ -58,7 +55,26 @@ export const CriticalThink: React.FC<CriticalThinkProps> = ({ onNext }) => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        onNext(formData);
+
+        try {
+            const res = await fetch("/api/test-three", {
+                method: "POST",
+                headers: {"Application-type": "JSON"},
+                body: JSON.stringify(formData)
+            })
+            const data = await res.json();
+            setResponse(data);
+            router.push('/result')
+            if ( res.ok ){
+                console.log("Successfully submitted test-three");
+            }
+            else{
+                console.log("Error submitting test-three")
+            }
+        }
+        catch ( err ) {
+            console.error("Error occured during test-three", err);
+        }
     }
 
     return (
@@ -67,7 +83,7 @@ export const CriticalThink: React.FC<CriticalThinkProps> = ({ onNext }) => {
                 {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, "0")}
             </div>
 
-
+            
             <div className="m-5">
                 <h1 className="text-2xl">Test 3/3</h1>
                 <form id="critical-think" onSubmit={handleSubmit}>
@@ -91,4 +107,3 @@ export const CriticalThink: React.FC<CriticalThinkProps> = ({ onNext }) => {
         </>
     )
 }
-export default CriticalThink;

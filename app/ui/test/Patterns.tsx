@@ -1,13 +1,11 @@
 'use client'
 import { useState } from "react"
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
+import { useRouter } from "next/navigation"
 import { useTimer } from "@/app/ui/Timer";
 
-interface PatternsProps {
-    onNext: (data: any) => void;
-}
-
-export const Patterns: React.FC<PatternsProps> = ({ onNext }) => {
+export default function Patterns () {
+    const router = useRouter();
     const { currentTime } = useTimer();
     const minutes = Math.floor( currentTime / 60);
     const seconds = currentTime % 60 
@@ -55,15 +53,35 @@ export const Patterns: React.FC<PatternsProps> = ({ onNext }) => {
    
    const handleSubmit = async (e: any) => {
        e.preventDefault();
-       onNext(formData);
+       try {
+           const res = await fetch ("/api/test-two", {
+               method: "POST",
+               headers: { "Application-Type": "JSON"} ,
+               body: JSON.stringify(formData)
+           })
+           const data = await res.json();
+           setResponse(data);
+           router.push('/test-3')
+           if ( res.ok ) {
+               console.log("Successfully submitted test-one")
+           }
+           else{
+               console.log("Error when submitting test-one")
+           }
+       }
+       catch (err) {
+           console.error("error when submitting test-one", err)
+       }
    } 
+    // add a next button that submits all answers at once to calculator
+    // have a function in calculator that checks and keeps score
     return (
         <>
             <div className="text-3xl m-5 text-center">
                 {minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, "0")}
             </div>
 
-
+            
             <div className="m-5">
                 <h1 className="text-2xl">Test 2/3</h1>
                 <form id="true-false" onSubmit={handleSubmit}>
@@ -84,4 +102,3 @@ export const Patterns: React.FC<PatternsProps> = ({ onNext }) => {
         </>
     )
 }
-export default Patterns;

@@ -3,11 +3,14 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import Cookies from 'js-cookie'
 import { v4 as uuidv4 } from 'uuid';
+import LoadingModal from "../Loading";
 const generateUserId = () => {
     return uuidv4();
 }
 export default function Age() {
-    //acquire the userId if exists, if not create new one
+	//modal component that informs user that async operations are running
+	const [isLoading , setIsLoading ] = useState(false);
+	//acquire the userId if exists, if not create new one
     useEffect(() => {
         const existingUserId = Cookies.get('userId');
         if ( !existingUserId ) {
@@ -23,7 +26,8 @@ export default function Age() {
     // generate random id and store it as cookie
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-
+    // show modal before async operations
+    setIsLoading(true);
     try {
         // sending age data to age function
         const response = await fetch("/api/age", {
@@ -41,6 +45,10 @@ export default function Age() {
     }
     catch ( err ) {
         console.error("Error submitting age", err)
+    }
+    finally {
+        // unmount the modal
+        setIsLoading(false);
     }  
 }   
     // If name == true, add 2-3 points on IQ, if not, HER LOSS
@@ -56,6 +64,7 @@ export default function Age() {
                     className="bg-red-800 px-5 py-3 rounded-lg text-white hover:bg-red-600">{element.age}</button>
                 </form>
             ))}
+            <LoadingModal isOpen={isLoading} />
         </>
     )
 }

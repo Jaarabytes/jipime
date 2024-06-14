@@ -1,15 +1,18 @@
 'use client'
+import LoadingModal from "@/app/ui/Loading";
 import { useState } from "react";
 import { MdKeyboardArrowUp } from "react-icons/md";
 
 export default function LipaMpesa() {
+    const [isLoading, setIsLoading] = useState(false);
+    const [token, setToken] = useState(null);
     const [response, setResponse] = useState(null);
     const [phoneNumber, setPhoneNumber] = useState('');
     const [amount, setAmount] = useState(0);
-
     // Function that sends money
     const weka = async (e: any) => {
         e.preventDefault();
+        setIsLoading(true)
         try {
             const generateTokenResponse = await fetch('/api/generate-token', {
                 method: "POST",
@@ -21,17 +24,17 @@ export default function LipaMpesa() {
             }
 
             const tokenData = await generateTokenResponse.json();
-            const token = tokenData.token;
-
+            const generatedToken = tokenData.response;
+            setToken(generatedToken)
             console.log("Successfully generated token");
 
             const stkPushResponse = await fetch('/api/mpesa-payment', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${generatedToken}`
                 },
-                body: JSON.stringify({ phoneNumber, amount })
+                body: JSON.stringify({ phoneNumber, amount, token: generatedToken })
             });
 
             if (!stkPushResponse.ok) {
@@ -44,6 +47,8 @@ export default function LipaMpesa() {
         } catch (err) {
             console.error("Error when paying", err);
             alert("Payment initiation failed");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -60,7 +65,7 @@ export default function LipaMpesa() {
                     value={phoneNumber}
                     name="phoneNumber"
                     placeholder="+254703405899"
-                    className="text-slate-900 rounded-sm py-3"
+                    className="text-slate-900 rounded-sm p-3"
                     required
                 />
                 <br />
@@ -69,12 +74,12 @@ export default function LipaMpesa() {
                 <br />
                 <br />
                 <input
-                    type="number"
+                    // type="number"
                     onChange={(e) => setAmount(Number(e.target.value))}
                     name="amount"
                     value={amount}
                     placeholder="529"
-                    className="text-slate-900 rounded-sm py-3"
+                    className="text-slate-900 rounded-sm p-3"
                     required
                 />
                 <br />
@@ -85,7 +90,7 @@ export default function LipaMpesa() {
                     <MdKeyboardArrowUp className="inline" /> Send <MdKeyboardArrowUp className="inline" />
                 </button>
             </form>
-            {response && <div>Response: {JSON.stringify(response)}</div>}
+            <LoadingModal isOpen={isLoading} />
         </div>
     );
 }

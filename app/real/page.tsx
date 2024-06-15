@@ -17,6 +17,8 @@ export default function RealPage() {
                         </dl>
                     ))}
                 </div>
+                <p className="my-5">For development, builds & contributions: </p>
+                <a href="https://github.com/Jaarabytes/jipime" target="_blank" className="text-red-400 underline">https://github.com/Jaarabytes/jipime</a>
             </div>
         </>
     )

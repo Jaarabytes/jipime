@@ -24,4 +24,4 @@ export default function Lipa () {
     )
 }
 // add donorbox to donate
-const methods = [{name: "Donate", link: ""}, {name: "M-pesa", link: '/mpesa'}]
+const methods = [{name: "Donate", link: "/donate"}, {name: "M-pesa", link: '/mpesa'}]

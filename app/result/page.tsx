@@ -2,7 +2,17 @@
 import Upvote from "@/app/ui/home/Donate"
 import { useState, useEffect } from "react"
 import LoadingModal from "../ui/Loading";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 export default function Result () {
+    const router = useRouter();
+    // redirect user to home pages, if his/her user Id is missing
+    useEffect(() => {
+        const userId = Cookies.get('userId');
+        if ( !userId ) {
+            router.push('/');
+        }
+    }, [])
     // soon to be the funniest component
     const [ userResults , setUserResults ] = useState({iq: 0, percentile: 0});
     const [isLoading, setIsLoading ] = useState(false);
@@ -31,7 +41,7 @@ export default function Result () {
             }
             }
         fetchUserResults();
-    }, [])
+    }, []);
     const resultPercentile = Math.round(userResults.percentile);
     return (
         <>

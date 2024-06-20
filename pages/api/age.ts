@@ -1,15 +1,20 @@
 // Create another TS file to store chartjs and its intricacies
 import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase, User } from "./connect";
+import { parseCookies } from "./cookieParser";
+import { Cookies } from "./cookieParser";
 // Here we calculate IQ buddy
 
 export default async function handler( req: NextApiRequest, res: NextApiResponse) {
     if ( req.method == "POST" ) {
         await connectToDatabase();
         let starterIQ = 0;
-        const { selectedAge, userId } = req.body;
-        console.log(req.body)
-
+        const { selectedAge } = req.body;
+        console.log(req.body);
+        // userId is no longer sent with the async request, it is now parsed from the req body
+        const cookies: Cookies = parseCookies(req.headers);
+        const userId = cookies.userId;
+        console.log("User's cookies (user id) is: ", userId);
         if ( selectedAge ){
             // I don't give out free points
             starterIQ += 2;

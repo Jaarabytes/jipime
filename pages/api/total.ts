@@ -19,11 +19,12 @@ export default async function handler (req: NextApiRequest, res:NextApiResponse 
                 return res.status(404).json({message: "User not found"})
             }
             // calculate user's iq
+            // fix the 361 iq error
             const rawTotalScore = user.starterIQ + user.testOneScore + user.testTwoScore + user.testThreeScore;
             console.log(`Raw total score is ${rawTotalScore}/30`);
             const maxScore = 30; //yes, i know it's 29 but hey only i'm winning here
             const meanRawScore = 15 //(half of the total availabale score)
-            const sdRawScore = 5 //satndard deviation for raw scores.
+            const sdRawScore = 5 //standard deviation for raw scores.
             // convert raw scores into z-scores
             const zScore = (rawTotalScore - meanRawScore) / sdRawScore;
             // convert sdscore into raw iq

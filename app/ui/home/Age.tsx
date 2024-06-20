@@ -7,6 +7,8 @@ import LoadingModal from "../Loading";
 const generateUserId = () => {
     return uuidv4();
 }
+// implements, if user can't store cookie, display alert message
+// fix user's choosing deault age thus iq == 361
 export default function Age() {
 	//modal component that informs user that async operations are running
 	const [isLoading , setIsLoading ] = useState(false);
@@ -33,7 +35,7 @@ export default function Age() {
         const response = await fetch("/api/age", {
             method: "POST",
             headers: {"Content-Type": 'application/json'},
-            body: JSON.stringify({selectedAge: ageValue, userId: userId})
+            body: JSON.stringify({selectedAge: ageValue })
         })
         // if successful, user starts the test
         if (response.ok) {

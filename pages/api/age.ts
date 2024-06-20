@@ -21,6 +21,7 @@ export default async function handler( req: NextApiRequest, res: NextApiResponse
         }
         const newUser = new User({userId , starterIQ});
         await newUser.save();
+        console.log(`New user's id is ${userId} and his starterIQ is ${starterIQ}`);
         return res.status(200).json(newUser);
     }
     else {

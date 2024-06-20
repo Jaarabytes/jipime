@@ -1,5 +1,6 @@
 import Age from "@/app/ui/home/Age"
 import Upvote from "@/app/ui/home/Donate"
+// create an alert that this can oly run when cookies are accepted
 export default function HomePage() {
   return (
     <>

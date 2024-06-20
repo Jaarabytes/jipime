@@ -29,10 +29,10 @@ export default function Result () {
     const resultPercentile = Math.round(userResults.percentile);
     return (
         <>
-            <div className="text-center my-5" style={{minHeight: "100vh"}}>
+            <div className="text-center my-5 px-3" style={{minHeight: "100vh"}}>
                 <h2 className="text-3xl">It&apos;s <b>{userResults.iq}</b></h2>
-                <p className="my-5">You IQ was measured to be <b>{userResults.iq}</b> which is equivalent to the {resultPercentile}<b>{(resultPercentile.toString()).endsWith("1")
-                ? `st` : (resultPercentile.toString()).endsWith("2") ? `nd` : (resultPercentile.toString()).endsWith("3") ? `rd` : `th` }</b>{} percentile, 
+                <p className="my-5">You IQ was measured to be <b>{userResults.iq}</b> which is equivalent to the <b>{resultPercentile}</b>{(resultPercentile.toString()).endsWith("1")
+                ? `st` : (resultPercentile.toString()).endsWith("2") ? `nd` : (resultPercentile.toString()).endsWith("3") ? `rd` : `th` } percentile, 
                 with a standard deviation of <b>15</b></p>
                 <p className="my-3">In a room filled with 1000 people, you&apos;d be position <b>{Math.round(100 - userResults.percentile) * 10}</b></p>
                 <p>Great test, yes? Give me money</p>

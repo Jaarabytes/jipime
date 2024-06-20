@@ -1,28 +1,34 @@
 'use client'
 import Upvote from "@/app/ui/home/Donate"
 import { useState, useEffect } from "react"
+import LoadingModal from "../ui/Loading";
 export default function Result () {
     // soon to be the funniest component
     const [ userResults , setUserResults ] = useState({iq: 0, percentile: 0});
-
+    const [isLoading, setIsLoading ] = useState(false);
     useEffect(() => {
-        const fetchUserResults = () => {
-            fetch ( "/api/total", {
-                method: "GET",
-            })
-            .then((response) => {
+        const fetchUserResults =  async () => {
+            // mount the loading modal
+            setIsLoading(true);
+            try {
+                const response = await fetch ( "/api/total", {
+                    method: "GET",
+                });
                 if ( response.ok ) {
-                    return response.json()
-                }else {
-                    throw new Error("Error fetching results!")
+                    const data = await response.json();
+                    setUserResults(data);
                 }
-            }).then((data) => {
-                console.log(data);
-                setUserResults({iq:data.iq, percentile: data.percentile});
-            }).catch((error) => {
-                alert(error.message);
-                console.error(error)
-            })
+                else {
+                    console.log("Failed to fetch results");
+                }
+            }
+            catch ( err ) {
+                console.error("Error fetching results", err);
+            }
+            finally {
+                // unmount modal
+                setIsLoading(false);
+            }
             }
         fetchUserResults();
     }, [])
@@ -38,6 +44,7 @@ export default function Result () {
                 <p>Great test, yes? Give me money</p>
                 <Upvote />
             </div>
+            <LoadingModal isOpen={isLoading} />
         </>
     )
 }

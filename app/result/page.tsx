@@ -43,7 +43,8 @@ export default function Result () {
             }
         fetchUserResults();
     }, []);
-    const resultPercentile = Math.round(userResults.percentile);
+    const resultPercentile = Math.floor(userResults.percentile);
+    const position =  parseFloat((100 - userResults.percentile).toFixed(2));
     return (
         <>
             <div className="text-center my-5 px-3" style={{minHeight: "100vh"}}>
@@ -52,6 +53,9 @@ export default function Result () {
                 ? `st` : (resultPercentile.toString()).endsWith("2") ? `nd` : (resultPercentile.toString()).endsWith("3") ? `rd` : `th` } percentile, 
                 with a standard deviation of <b>15</b></p>
                 <p className="my-3">In a room filled with 1000 people, you&apos;d be position <b>{Math.round(100 - userResults.percentile) * 10}</b></p>
+                {/* add the top 10 percent feature so that users can gag on it*/}
+                {(position ? <p className="my-3">Congratulations, You are in the top <b>{position}%</b></p> : <p></p>)}
+
                 <p>Great test, yes? Give me money</p>
                 <Upvote />
             </div>

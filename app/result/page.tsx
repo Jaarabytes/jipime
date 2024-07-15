@@ -1,19 +1,35 @@
 'use client'
 import Upvote from "@/app/ui/home/Donate"
-import { useState, useEffect, Suspense } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { total } from "@/lib/actions";
 import LoadingModal from "../ui/Loading";
-export default function Result () {
+import InternalServerError from "../ui/db/InternalServerError";
+import UserNotFound from "../ui/db/UserNotFound";
+export default function Result () {    
+    const [ loading, setLoading ] = useState(false);
+    const [ error, setError ] = useState(false);
+    const [ notFound, setNotFound ] = useState(false);
     // redirect user to home pages, if his/her user Id is missing
     const fetchUserResults = async () => {
-        const result = await total();
-        if ( result ) {
-            setUserResults(result)
+        setLoading(true)
+        try {
+            const result = await total();
+            if ( result ) {
+                setUserResults(result);
+            }
+            else {
+                setNotFound(true);
+            }
+        }
+        catch ( err ) {
+            setError(true);
+        }
+        finally {
+            setLoading(false)
         }
     }
-    const [ notFound , setNotFound ] = useState();
     const router = useRouter();
     useEffect(() => {
         const userId = Cookies.get('userId');
@@ -27,9 +43,24 @@ export default function Result () {
     const [ userResults , setUserResults ] = useState({iq: 0, percentile: 0});
     const resultPercentile = Math.floor(userResults.percentile);
     const position =  parseFloat((100 - userResults.percentile).toFixed(2));
+    if ( loading ) {
+        return (
+            <LoadingModal />
+        )
+    }
+    if ( error ) {
+        return(
+            <InternalServerError />
+        )
+    }
+
+    if ( notFound ) {
+        return (
+            <UserNotFound />
+        )
+    }
     return (
         <>
-            <Suspense fallback={<LoadingModal />}>
                 <div className="text-center my-5 px-3" style={{minHeight: "100vh"}}>
                     <h2 className="text-3xl">It&apos;s <b>{userResults.iq}</b></h2>
                     <p className="my-5">You IQ was measured to be <b>{userResults.iq}</b> which is equivalent to the <b>{resultPercentile}</b>{(resultPercentile.toString()).endsWith("1")
@@ -41,7 +72,6 @@ export default function Result () {
                     <p>Great test, yes? Give me money</p>
                     <Upvote />
                 </div>
-            </Suspense>
         </>
     )
 }

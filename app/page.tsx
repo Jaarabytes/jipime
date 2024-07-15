@@ -1,14 +1,21 @@
+'use client'
+
 import Age from "@/app/ui/home/Age"
 import Upvote from "@/app/ui/home/Donate"
+import { getUserId } from "@/lib/actions"
+import { useEffect } from "react"
 // create an alert that this can oly run when cookies are accepted
 export default function HomePage() {
+  useEffect(() => {
+    getUserId();
+  })
   return (
     <>
       <div className="px-5 text-center">
         <h1 className="text-[60px] font-bold">IQ test</h1>
         <p className="text-2xl py-5">Made by <a href="https://jaarabytes.vercel.app" className="text-red-400">Jaarabytes</a></p>
         <hr />
-        <div className="sm:px-60 my-5">
+        <div className="lg:px-60 my-5">
           <p className="text-lg my-5">This test just tries to boost your confidence levels by guessing your IQ levels. It provides an estimate between the values 80-130,
             where 100 is the population average. This is not real, please for real IQ tests <a href="/real" 
             className="text-red-400 underline">click here</a>

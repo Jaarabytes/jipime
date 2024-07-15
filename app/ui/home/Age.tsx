@@ -1,72 +1,36 @@
 'use client'
-import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
-import Cookies from 'js-cookie'
-import { v4 as uuidv4 } from 'uuid';
-import LoadingModal from "../Loading";
-const generateUserId = () => {
-    return uuidv4();
-}
-// implements, if user can't store cookie, display alert message
-// fix user's choosing deault age thus iq == 361
-export default function Age() {
-	//modal component that informs user that async operations are running
-	const [isLoading , setIsLoading ] = useState(false);
-	//acquire the userId if exists, if not create new one
-    useEffect(() => {
-        const existingUserId = Cookies.get('userId');
-        if ( !existingUserId ) {
-            const newUserId = generateUserId();
-            Cookies.set('userId', newUserId)
-        }
-    }, []);
-    const userId = Cookies.get('userId')
-    // handling client-side redirect
-    const router = useRouter();
-    // age-selection is necessary for extra points uwu
-    const [ ageValue, setAgeValue ] = useState(false);
-    // generate random id and store it as cookie
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
-    // show modal before async operations
-    setIsLoading(true);
-    try {
-        // sending age data to age function
-        const response = await fetch("/api/age", {
-            method: "POST",
-            headers: {"Content-Type": 'application/json'},
-            body: JSON.stringify({selectedAge: ageValue })
-        })
-        // if successful, user starts the test
-        if (response.ok) {
-            router.push('/test')
-        }
-        else {
-            console.error("Failed to submit age");
-        }
-    }
-    catch ( err ) {
-        console.error("Error submitting age", err)
-    }
-    finally {
-        // unmount the modal
-        setIsLoading(false);
-    }  
-}   
-    // If name == true, add 2-3 points on IQ, if not, HER LOSS
-    const ages = [{name:true , age: "16<"},{name: false, age: "18-50"}, {name: false, age: "51-60"},{name: true, age: "61+"}];
-    return (
-        <>
-            <h3 className="my-5 text-lg">Please select your age: </h3>
-            {ages.map((element, index) => (
-                // change the form action for the mpesa lipa form
-                <form className="sm:inline p-5" key={index} onSubmit={handleSubmit}>
-                    <button
-                    onClick={() => setAgeValue(element.name)}
-                    className="bg-red-800 px-5 py-3 rounded-lg text-white hover:bg-red-600">{element.age}</button>
-                </form>
-            ))}
-            <LoadingModal isOpen={isLoading} />
-        </>
-    )
-}
+import React, { useState } from 'react';
+import { handleAge } from '@/lib/actions';
+import { useRouter } from 'next/navigation';
+const Age = () => {
+  const [selectedAge, setSelectedAge] = useState(null);
+
+  const ages = ['16<', '17-50', '51-60', '60+'];
+
+  const handleSubmit = async (age: any) => {
+    setSelectedAge(age);
+    await handleAge(age)
+    // You can add your submit logic here, e.g., sending data to a server
+    console.log(age);
+  };
+
+  return (
+    <>
+      <h2>Select your age:</h2>
+      <div className='flex justify-evenly py-5 lg:px-[35%]'>
+      {ages.map((age, index) => (
+        <button className='bg-red-800 px-4 py-3 rounded-lg text-white hover:bg-red-600'
+          key={index}
+          onClick={() => handleSubmit(age)}
+          disabled={selectedAge === age}
+        >
+          {age}
+        </button>
+      ))}
+      </div>
+      {selectedAge && <p>You selected: {selectedAge}</p>}
+    </>
+  );
+};
+
+export default Age;

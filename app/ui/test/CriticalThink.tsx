@@ -3,9 +3,11 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useState } from "react"
 import { useTimer } from "@/app/ui/Timer";
 import { checkTestThree } from "@/lib/actions";
+import LoadingModal from "../Loading";
 
 // after finish should redirect to result page
 export default function CriticalThink () {
+    const [ loading , setLoading ] = useState(false);
     const { currentTime } = useTimer();
     const minutes = Math.floor( currentTime / 60);
     const seconds = currentTime % 60 
@@ -46,16 +48,23 @@ export default function CriticalThink () {
             'question-9': '',
             'question-10': ''
     });
-    const [ response, setResponse ] = useState(null);
     const handleChange = (e: any) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({...prevData, [name]: value}))
     }
 
     const handleSubmit = async (e: any) => {
+        setLoading(true)
         e.preventDefault();
         console.log(`Form data is ${formData}`)
         await checkTestThree(formData)
+        setLoading(false)
+    }
+
+    if ( loading ) {
+        return (
+            <LoadingModal />
+        )
     }
 
     return (

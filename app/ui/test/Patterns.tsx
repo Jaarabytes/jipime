@@ -3,8 +3,10 @@ import { useState } from "react"
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useTimer } from "@/app/ui/Timer";
 import { checkTestTwo } from "@/lib/actions";
+import LoadingModal from "../Loading";
 
 export default function Patterns () {
+    const [ loading, setLoading ] = useState(false);
     const { currentTime } = useTimer();
     const minutes = Math.floor( currentTime / 60);
     const seconds = currentTime % 60 
@@ -43,7 +45,6 @@ export default function Patterns () {
             'question-9': ''
 
     })
-    const [ response, setResponse ] = useState(null);
 
     const handleChange = (e: any) => {
         const { name, value } = e.target;
@@ -51,12 +52,18 @@ export default function Patterns () {
    }
    
    const handleSubmit = async (e: any) => {
+       setLoading(true)
        e.preventDefault();
        console.log(`Form data is ${formData}`)
-    await checkTestTwo(formData)
+        await checkTestTwo(formData)
+        setLoading(false)
    } 
-    // add a next button that submits all answers at once to calculator
-    // have a function in calculator that checks and keeps score
+
+   if ( loading ) {
+    return (
+        <LoadingModal />
+    )
+}
     return (
         <>
             <div className="text-3xl m-5 text-center">

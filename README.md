@@ -32,6 +32,7 @@ npm install
 
 ## Docker
 The image is located [here ->](https://hub.docker.com/repository/docker/jaarabytes/jipime)
+
 Run the below command:
 ```bash
 docker pull jaarabytes/jipime:general

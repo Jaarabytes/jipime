@@ -1,19 +1,26 @@
 'use client'
 import React, { useState } from 'react';
 import { handleAge } from '@/lib/actions';
-import { useRouter } from 'next/navigation';
+import LoadingModal from '../Loading';
+
 const Age = () => {
   const [selectedAge, setSelectedAge] = useState(null);
-
+  const [ loading, setLoading ] = useState(false);
   const ages = ['16<', '17-50', '51-60', '60+'];
 
   const handleSubmit = async (age: any) => {
+    setLoading(true)
     setSelectedAge(age);
     await handleAge(age)
     // You can add your submit logic here, e.g., sending data to a server
     console.log(age);
+    setLoading(false)
   };
-
+  if ( loading ) {
+    return (
+        <LoadingModal />
+    )
+  }
   return (
     <>
       <h2>Select your age:</h2>

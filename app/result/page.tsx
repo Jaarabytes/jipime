@@ -20,7 +20,7 @@ export default function Result () {
         if ( !userId ) {
             router.push('/');
         }
-    }, [])
+    }, [router])
     useEffect(() => {
         fetchUserResults();
     }, [])

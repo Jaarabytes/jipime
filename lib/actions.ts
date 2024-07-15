@@ -1,11 +1,10 @@
 'use server'
 
-import { v4 as uuidv4 } from 'uuid'
 import { cookies } from 'next/headers'
 import { connectToDatabase, User } from './db';
 import { redirect } from 'next/navigation';
 import { erf } from 'mathjs';
-
+import { uid } from 'uid';
 
 // func that checks if user's choice is equal to answer and if so, it increments their score
 type userChoices = {[key: string]: string};
@@ -28,7 +27,9 @@ export async function getUserId () {
     return userId.value;
   }
   else {
-    const userId = uuidv4();
+    // creates a user id based on timestamp
+    // ID's used to repeat each other since UUID doesn't create really unique ID's
+    const userId = uid();
     cookies().set('userId', userId, {
       httpOnly: true,
       sameSite: 'strict',
@@ -151,5 +152,3 @@ export async function total () {
     throw err;
   }
 }
-
-export { connectToDatabase, User }

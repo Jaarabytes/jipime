@@ -1,12 +1,11 @@
 'use client'
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useState } from "react"
-import { useRouter } from "next/navigation";
 import { useTimer } from "@/app/ui/Timer";
+import { checkTestThree } from "@/lib/actions";
 
 // after finish should redirect to result page
 export default function CriticalThink () {
-    const router = useRouter();
     const { currentTime } = useTimer();
     const minutes = Math.floor( currentTime / 60);
     const seconds = currentTime % 60 
@@ -55,26 +54,8 @@ export default function CriticalThink () {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-
-        try {
-            const res = await fetch("/api/test-three", {
-                method: "POST",
-                headers: {"Application-type": "JSON"},
-                body: JSON.stringify(formData)
-            })
-            const data = await res.json();
-            setResponse(data);
-            router.push('/result')
-            if ( res.ok ){
-                console.log("Successfully submitted test-three");
-            }
-            else{
-                console.log("Error submitting test-three")
-            }
-        }
-        catch ( err ) {
-            console.error("Error occured during test-three", err);
-        }
+        console.log(`Form data is ${formData}`)
+        await checkTestThree(formData)
     }
 
     return (

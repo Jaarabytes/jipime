@@ -1,11 +1,10 @@
 'use client'
 import { useState } from "react"
 import { MdOutlineKeyboardArrowRight } from "react-icons/md"
-import { useRouter } from "next/navigation"
 import { useTimer } from "@/app/ui/Timer";
+import { checkTestTwo } from "@/lib/actions";
 
 export default function Patterns () {
-    const router = useRouter();
     const { currentTime } = useTimer();
     const minutes = Math.floor( currentTime / 60);
     const seconds = currentTime % 60 
@@ -53,25 +52,8 @@ export default function Patterns () {
    
    const handleSubmit = async (e: any) => {
        e.preventDefault();
-       try {
-           const res = await fetch ("/api/test-two", {
-               method: "POST",
-               headers: { "Application-Type": "JSON"} ,
-               body: JSON.stringify(formData)
-           })
-           const data = await res.json();
-           setResponse(data);
-           router.push('/test-3')
-           if ( res.ok ) {
-               console.log("Successfully submitted test-one")
-           }
-           else{
-               console.log("Error when submitting test-one")
-           }
-       }
-       catch (err) {
-           console.error("error when submitting test-one", err)
-       }
+       console.log(`Form data is ${formData}`)
+    await checkTestTwo(formData)
    } 
     // add a next button that submits all answers at once to calculator
     // have a function in calculator that checks and keeps score

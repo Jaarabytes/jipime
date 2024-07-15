@@ -51,7 +51,6 @@ export async function handleAge ( range: string ) {
     }
     const newUser = await new User({ userId, starterIQ });
     await newUser.save();
-    console.log(`The newly saved user is ${newUser}`)
   }
   catch ( error ){
     console.log(`Error during age selection: ${error}`)
@@ -63,10 +62,8 @@ export async function checkTestOne (choices: userChoices) {
   const userId = await getUserId();
   console.log(`User's id is ${userId}`)
   const answers = ["False", "True", "True", "False", "False", "False", "True", "True", "False", "True"];
-  console.log(`User's choices on question one are ${JSON.stringify(choices)}`)
   const score = await checkValidity(choices, answers);
   console.log(`User's score in test one is ${score}`)
-  // const response = { testOneScore } 
   try {
     const user = await User.findOneAndUpdate({userId}, {testOneScore: score}, {new: true})
     if ( !user ){
@@ -76,6 +73,7 @@ export async function checkTestOne (choices: userChoices) {
   }
   catch ( err ) {
     console.log(`Error occured when checking test one: ${err}`)
+    throw err;
   }
   redirect('/test-2')
 }
@@ -84,7 +82,6 @@ export async function checkTestTwo (choices: userChoices) {
   const userId = await getUserId();
   console.log(`User's id is ${userId}`)
   const answers = ["True", "False", "False", "False", "True", "False", "True", "False", "True"];
-  console.log(`User's choices on test two are ${JSON.stringify(choices)}`)
   const score = await checkValidity(choices, answers);
   console.log(`User's score in test two is ${score}`)
   try {
@@ -96,6 +93,7 @@ export async function checkTestTwo (choices: userChoices) {
   }
   catch ( err ) {
     console.log(`Error occured when checking test one: ${err}`)
+    throw err;
   }
   redirect('/test-3')
 }
@@ -105,7 +103,6 @@ export async function checkTestThree (choices: userChoices) {
   console.log(`User's id is ${userId}`)
   const answers = ["fleeting", "artist", "magnanimous", "sculpture", "True", "Box that has misfortunes and hope trapped inside",
   "False", "Cultural trend", "Economy", "argue with the opposite"];
-  console.log(`User's choices on test three are ${JSON.stringify(choices)}`)
   const score = await checkValidity(choices, answers);
   console.log(`User's score in test three is ${score}`)
   try {
@@ -116,7 +113,8 @@ export async function checkTestThree (choices: userChoices) {
     console.log("User updated successfully")
   }
   catch ( err ) {
-    console.log(`Error occured when checking test one: ${err}`)
+    console.log(`Error occured when checking test one: ${err}`);
+    throw err;
   }
   redirect('/result')
 }
@@ -149,7 +147,8 @@ export async function total () {
     return {iq: iq, percentile: percentile}
   }
   catch ( err ) {
-    console.log(`Error when calculating total IQ: ${err}`)
+    console.log(`Error when calculating total IQ: ${err}`);
+    throw err;
   }
 }
 

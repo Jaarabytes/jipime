@@ -1,8 +1,6 @@
 'use client'
 import Upvote from "@/app/ui/home/Donate"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 import { total } from "@/lib/actions";
 import LoadingModal from "../ui/Loading";
 import InternalServerError from "../ui/db/InternalServerError";
@@ -30,13 +28,6 @@ export default function Result () {
             setLoading(false)
         }
     }
-    const router = useRouter();
-    useEffect(() => {
-        const userId = Cookies.get('userId');
-        if ( !userId ) {
-            router.push('/');
-        }
-    }, [router])
     useEffect(() => {
         fetchUserResults();
     }, [])

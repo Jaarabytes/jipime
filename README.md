@@ -15,6 +15,8 @@ Thank you!
 Prerequisites:
 - Node and npm installed
 
+**NOTE**: All other branches apart from **main** are discontinued
+
 Obtain the various API keys as described in the `.env.example` file.
 Run the below commands:
 ```bash

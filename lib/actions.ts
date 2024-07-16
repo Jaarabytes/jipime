@@ -4,8 +4,6 @@ import { cookies } from 'next/headers'
 import { connectToDatabase, User } from './db';
 import { redirect } from 'next/navigation';
 import { erf } from 'mathjs';
-import { uid } from 'uid';
-
 // func that checks if user's choice is equal to answer and if so, it increments their score
 type userChoices = {[key: string]: string};
 type answers = string[]

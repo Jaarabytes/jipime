@@ -6,7 +6,7 @@ export default function RealPage() {
     ]
 
     return (
-        <>
+        <main style={{minHeight: "100vh"}}>
             <div className="px-5 my-5" style={{minHeight: "100vh"}}>
                 <p>Here is a list of some good IQ tests (They are not better than <a href="/" 
                 className="text-red-400 underline">jipime</a>, however they inspired me)</p>
@@ -20,6 +20,6 @@ export default function RealPage() {
                 <p className="my-5">For development, builds & contributions: </p>
                 <a href="https://github.com/Jaarabytes/jipime" target="_blank" className="text-red-400 underline">https://github.com/Jaarabytes/jipime</a>
             </div>
-        </>
+        </main>
     )
 }

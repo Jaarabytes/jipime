@@ -10,7 +10,7 @@ export default function HomePage() {
     getUserId();
   })
   return (
-    <>
+    <main style={{minHeight: '100vh'}}>
       <div className="px-5 text-center">
         <h1 className="text-[60px] font-bold">IQ test</h1>
         <p className="text-2xl py-5">Made by <a href="https://jaarabytes.vercel.app" className="text-red-400">Jaarabytes</a></p>
@@ -30,6 +30,6 @@ export default function HomePage() {
         <Age />
         <Upvote />
       </div>
-    </>
+    </main>
   )
 }

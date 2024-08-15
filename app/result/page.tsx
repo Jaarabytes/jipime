@@ -54,9 +54,9 @@ export default function Result () {
         <>
                 <div className="text-center my-5 px-3" style={{minHeight: "100vh"}}>
                     <h2 className="text-3xl">It&apos;s <b>{userResults.iq}</b></h2>
-                    <p className="my-5">You IQ was measured to be <b>{userResults.iq}</b> which is equivalent to the <b>{resultPercentile}</b>{(resultPercentile.toString()).endsWith("1")
-                    ? `st` : (resultPercentile.toString()).endsWith("2") ? `nd` : (resultPercentile.toString()).endsWith("3") ? `rd` : `th` } percentile, 
+                    <p className="my-5">You IQ was measured to be <b>{userResults.iq}</b> which is equivalent to the <b>{resultPercentile}</b>{(resultPercentile.toString()).endsWith("1") ? `st` : (resultPercentile.toString()).endsWith("2") ? `nd` : (resultPercentile.toString()).endsWith("3") ? `rd` : `th` } percentile, 
                     with a standard deviation of <b>15</b></p>
+                      <img src={Number(userResults.iq) > 130 ? `./130.jpg` : Number(userResults.iq) > 120 ? `./hood.png` : Number(userResults.iq) < 90 ? `./Feelings.jpg` : `./Mid.webp`} className='mx-auto max-h-lg max-w-lg' alt={Number(userResults.iq) > 130 ? `smart user` : Number(userResults.iq) > 120 ? `smart enough` : Number(userResults.iq) < 90 ? `#real` : `mid user`} />
                     <p className="my-3">In a room filled with 1000 people, you&apos;d be position <b>{Math.round(100 - userResults.percentile) * 10}</b></p>
                     {/* add the top 10 percent feature so that users can gag on it*/}
                     {(position < 20 ? <p className="my-3">Congratulations, You are in the top <b>{position}%</b></p> : <p></p>)}

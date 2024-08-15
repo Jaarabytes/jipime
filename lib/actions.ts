@@ -26,11 +26,8 @@ export async function getUserId () {
     return userId.value;
   }
   else {
-    // creates a user id based on timestamp
-    // ID's used to repeat each other since UUID doesn't create really unique ID's
-    const timestamp = Date.now().toString(36);
-    const randomString = Math.random().toString(36)
-    const userId = (timestamp + randomString);
+    // creates a user id based on timestamp and a random string.
+    const userId = (Date.now().toString(36) + Math.random().toString(36));
     console.log(`User's id using my method is ${userId}`)
     cookies().set('userId', userId, {
       httpOnly: true,

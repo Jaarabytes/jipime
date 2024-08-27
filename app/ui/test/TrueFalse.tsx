@@ -4,9 +4,11 @@ import { useState } from "react"
 import { useTimer } from "@/app/ui/Timer";
 import { checkTestOne } from "@/lib/actions";
 import LoadingModal from "../Loading";
+import InternalServerError from "@/app/ui/db/InternalServerError"
 
 export default function TrueFalse () {
     const [loading, setLoading ] = useState(false);
+    const [ error , setError ] = useState(false);
     const { currentTime } = useTimer();
     const minutes = Math.floor( currentTime / 60);
     const seconds = currentTime % 60 
@@ -52,12 +54,23 @@ export default function TrueFalse () {
         setFormData((prevData) => ({...prevData, [name]: value }))
    } 
    const handleSubmit = async (e: any) => {
-    setLoading(true)
-    e.preventDefault();
-    console.log(`Form data is ${formData}`)
-    await checkTestOne(formData)
-    setLoading(false)
+    try {
+      setLoading(true)
+      e.preventDefault();
+      console.log(`Form data is ${formData}`)
+      await checkTestOne(formData)
+      setLoading(false)
+    }
+    catch ( err ) {
+      setError(true)
+    }
    }
+
+   if ( error ) {
+    return (
+        <InternalServerError />
+    )
+}
 
    if ( loading ) {
     return (

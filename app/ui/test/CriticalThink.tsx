@@ -4,10 +4,12 @@ import { useState } from "react"
 import { useTimer } from "@/app/ui/Timer";
 import { checkTestThree } from "@/lib/actions";
 import LoadingModal from "../Loading";
+import InternalServerError from "@/app/ui/db/InternalServerError"
 
 // after finish should redirect to result page
 export default function CriticalThink () {
     const [ loading , setLoading ] = useState(false);
+    const [ error , setError ] = useState(false);
     const { currentTime } = useTimer();
     const minutes = Math.floor( currentTime / 60);
     const seconds = currentTime % 60 
@@ -54,13 +56,22 @@ export default function CriticalThink () {
     }
 
     const handleSubmit = async (e: any) => {
+      try {
         setLoading(true)
         e.preventDefault();
         console.log(`Form data is ${formData}`)
         await checkTestThree(formData)
         setLoading(false)
+      }
+      catch (err) {
+        setError(true)
+      }
     }
-
+   if ( error ) {
+    return (
+        <InternalServerError />
+    )
+}
     if ( loading ) {
         return (
             <LoadingModal />

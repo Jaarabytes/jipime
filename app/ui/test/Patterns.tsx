@@ -4,8 +4,10 @@ import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useTimer } from "@/app/ui/Timer";
 import { checkTestTwo } from "@/lib/actions";
 import LoadingModal from "../Loading";
+import InternalServerError from "@/app/ui/db/InternalServerError"
 
 export default function Patterns () {
+    const [ error, setError ] = useState(false);
     const [ loading, setLoading ] = useState(false);
     const { currentTime } = useTimer();
     const minutes = Math.floor( currentTime / 60);
@@ -52,13 +54,24 @@ export default function Patterns () {
    }
    
    const handleSubmit = async (e: any) => {
+      try {
        setLoading(true)
        e.preventDefault();
        console.log(`Form data is ${formData}`)
         await checkTestTwo(formData)
         setLoading(false)
+ 
+      }
+      catch ( err ) {
+        setError(true)
+      }
    } 
 
+   if ( error ) {
+    return (
+        <InternalServerError />
+    )
+}
    if ( loading ) {
     return (
         <LoadingModal />

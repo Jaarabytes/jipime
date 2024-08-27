@@ -7,9 +7,12 @@ import { useEffect } from "react"
 
 export default function HomePage() {
   useEffect(() => {
-    getUserId();
-  }, [])
+  const fetchData = async () => {
+    await getUserId();
+  };
 
+  fetchData();
+}, []);
 return (
   <main style={{minHeight: '100vh'}}>
     <div className="px-5 text-center">

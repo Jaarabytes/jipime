@@ -5,7 +5,6 @@ import { total } from "@/lib/actions";
 import LoadingModal from "../ui/Loading";
 import InternalServerError from "../ui/db/InternalServerError";
 import UserNotFound from "../ui/db/UserNotFound";
-import Image from "next/image";
 
 export default function Result () {    
     const [ loading, setLoading ] = useState(false);
@@ -58,9 +57,7 @@ export default function Result () {
                     <h2 className="text-3xl">It&apos;s <b>{userResults.iq}</b></h2>
                     <p className="my-5">You IQ was measured to be <b>{userResults.iq}</b> which is equivalent to the <b>{resultPercentile}</b>{(resultPercentile.toString()).endsWith("1") ? `st` : (resultPercentile.toString()).endsWith("2") ? `nd` : (resultPercentile.toString()).endsWith("3") ? `rd` : `th` } percentile, 
                     with a standard deviation of <b>15</b></p>
-                      <Image src={Number(userResults.iq) > 130 ? `./130.jpg` : Number(userResults.iq) > 120 ? `./hood.png` : Number(userResults.iq) < 90 ? `/Feelings.jpg` : `./Mid.webp`} className='mx-auto' width={250} height={250} alt={Number(userResults.iq) > 130 ? `smart user` : Number(userResults.iq) > 120 ? `smart enough` : Number(userResults.iq) < 90 ? `#real` : `mid user`}></Image>
                     <p className="my-3">In a room filled with 1000 people, you&apos;d be position <b>{Math.ceil(100 - userResults.percentile) * 10}</b></p>
-                    {/* add the top 10 percent feature so that users can gag on it*/}
                     {(position < 20 ? <p className="my-3">Congratulations, You are in the top <b>{position}%</b></p> : <p></p>)}
                     <p>Great test, yes? Give me money</p>
                     <Upvote />

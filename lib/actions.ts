@@ -61,7 +61,7 @@ export async function handleAge ( range: string ) {
 
 export async function checkTestOne (choices: userChoices) {
   const userId = await getUserId();
-  console.log(`User's id is ${userId}`)
+  console.log(`User's id is ${userId} (test one)`)
   const answers = ["False", "True", "True", "False", "False", "False", "True", "True", "False", "True"];
   const score = await checkValidity(choices, answers);
   console.log(`User's score in test one is ${score}`)
@@ -76,24 +76,24 @@ export async function checkTestOne (choices: userChoices) {
     console.log(`Error occured when checking test one: ${err}`)
     throw err;
   }
-  redirect('/test-2')
+  redirect('/pre-result')
 }
 
 export async function checkTestTwo (choices: userChoices) {
   const userId = await getUserId();
-  console.log(`User's id is ${userId}`)
+  console.log(`User's id is ${userId} (Test two)`)
   const answers = ["True", "False", "False", "False", "True", "False", "True", "False", "True"];
   const score = await checkValidity(choices, answers);
   console.log(`User's score in test two is ${score}`)
   try {
     const user = await User.findOneAndUpdate({userId}, {testTwoScore: score}, {new: true})
     if ( !user ){
-      console.log("User not found, test 1")
+      console.log("User not found, test 2")
     }
     console.log("User updated successfully")
   }
   catch ( err ) {
-    console.log(`Error occured when checking test one: ${err}`)
+    console.log(`Error occured when checking test two: ${err}`)
     throw err;
   }
   redirect('/test-3')
@@ -101,7 +101,7 @@ export async function checkTestTwo (choices: userChoices) {
 
 export async function checkTestThree (choices: userChoices) {
   const userId = await getUserId();
-  console.log(`User's id is ${userId}`)
+  console.log(`User's id is ${userId} (Test three)`)
   const answers = ["fleeting", "artist", "magnanimous", "sculpture", "True", "Box that has misfortunes and hope trapped inside",
   "False", "Cultural trend", "Economy", "argue with the opposite"];
   const score = await checkValidity(choices, answers);
@@ -109,15 +109,55 @@ export async function checkTestThree (choices: userChoices) {
   try {
     const user = await User.findOneAndUpdate({userId}, {testThreeScore: score}, {new: true})
     if ( !user ){
-      console.log("User not found, test 1")
+      console.log("User not found, test 3")
     }
     console.log("User updated successfully")
   }
   catch ( err ) {
-    console.log(`Error occured when checking test one: ${err}`);
+    console.log(`Error occured when checking test three: ${err}`);
     throw err;
   }
   redirect('/result')
+}
+
+export async function preview() {
+  try {
+    const userId = await getUserId();
+    await connectToDatabase();
+    const user = await User.findOne({ userId });
+
+    if (!user) {
+      console.log(`User not found`);
+      return;
+    }
+
+    // Assume testOneScore is now the score out of 10 questions
+    const rawTotalScore = user.testOneScore;
+    const maxScore = 10; // Max score is now 10
+    const meanRawScore = maxScore * 0.75; // Adjust mean score assuming 75% average
+    const sdRawScore = maxScore * 0.2; // Adjust standard deviation assuming 20% variability
+    const zScore = (rawTotalScore - meanRawScore) / sdRawScore;
+
+    // Assuming we only care about testOneScore
+    const iq = Math.round(100 + zScore * 15 + user.starterIQ);
+
+    const calculatePercentile = (iq: number) => {
+      const mean = 100;
+      const standardDeviation = 15;
+      const zScore = (iq - mean) / standardDeviation;
+      const percentile = (1 + erf(zScore / Math.sqrt(2))) / 2 * 100;
+      console.log("The percentile is", percentile);
+      return percentile;
+    }
+
+    console.log(iq);
+    const percentile = calculatePercentile(iq);
+    console.log(`User is ${user}`);
+    return { iq: iq, percentile: percentile };
+  } catch (err) {
+    console.log(`Error when calculating total IQ: ${err}`);
+    throw err;
+  }
 }
 
 export async function total () {

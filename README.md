@@ -1,6 +1,6 @@
 ## Yes, you are high IQ bro
 
-[Prove it](https://jipime.vercel.app)
+[Prove it](https://jipime.netlify.app)
 
 We accept pull requests and contributions for:
 - New features

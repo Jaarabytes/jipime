@@ -5,7 +5,6 @@ import { connectToDatabase, User } from './db';
 import { redirect } from 'next/navigation';
 import { erf } from 'mathjs';
 
-// func that checks if user's choice is equal to answer and if so, it increments their score
 type userChoices = {[key: string]: string};
 type answers = string[]
 export async function checkValidity (userChoices: userChoices, answers: answers ) {
@@ -27,7 +26,6 @@ export async function getUserId () {
     return userId.value;
   }
   else {
-    // creates a user id based on timestamp and a random string.
     const userId = (Date.now().toString(36) + Math.random().toString(36));
     console.log(`User's id using my method is ${userId}`)
     cookies().set('userId', userId, {
@@ -47,6 +45,7 @@ export async function handleAge ( range: string ) {
     await connectToDatabase();
     console.log("Successfully connected to the db")
     let starterIQ = 0;
+    // I give bonus points to the elderly and kids since they don't do stupid IQ tests
     if ( range == "16<" || range == "60+" ) {
       starterIQ = 2;
     }
@@ -120,6 +119,15 @@ export async function checkTestThree (choices: userChoices) {
   redirect('/result')
 }
 
+export async function calculatePercentile (iq: number) {
+    const mean = 100;
+    const standardDeviation = 15;
+    const zScore = (iq - mean) / standardDeviation;
+    const percentile = (1 + erf(zScore / Math.sqrt(2))) / 2 * 100;
+    console.log("The percentile is", percentile);
+    return percentile;
+ }
+
 export async function preview() {
   try {
     const userId = await getUserId();
@@ -130,27 +138,16 @@ export async function preview() {
       console.log(`User not found`);
       return;
     }
-
-    // Assume testOneScore is now the score out of 10 questions
+    
     const rawTotalScore = user.testOneScore;
-    const maxScore = 10; // Max score is now 10
-    const meanRawScore = maxScore * 0.75; // Adjust mean score assuming 75% average
-    const sdRawScore = maxScore * 0.2; // Adjust standard deviation assuming 20% variability
+    const maxScore = 10;
+    // Assuming 20% variability and 75% average
+    const meanRawScore = maxScore * 0.75;     
+    const sdRawScore = maxScore * 0.2; 
     const zScore = (rawTotalScore - meanRawScore) / sdRawScore;
 
-    // Assuming we only care about testOneScore
     const iq = Math.round(100 + zScore * 15 + user.starterIQ);
 
-    const calculatePercentile = (iq: number) => {
-      const mean = 100;
-      const standardDeviation = 15;
-      const zScore = (iq - mean) / standardDeviation;
-      const percentile = (1 + erf(zScore / Math.sqrt(2))) / 2 * 100;
-      console.log("The percentile is", percentile);
-      return percentile;
-    }
-
-    console.log(iq);
     const percentile = calculatePercentile(iq);
     console.log(`User is ${user}`);
     return { iq: iq, percentile: percentile };
@@ -174,15 +171,6 @@ export async function total () {
     const zScore = ( rawTotalScore - meanRawScore ) / sdRawScore;
     const iq = 100 + zScore * 15 + user.starterIQ;
 
-    const calculatePercentile = (iq: number) => {
-      const mean = 100;
-      const standardDeviation = 15;
-      const zScore = ( iq - mean ) / standardDeviation;
-      const percentile = ( 1 + erf(zScore/Math.sqrt(2))) / 2 * 100;
-      console.log("The percentile is", percentile)
-      return percentile;
-    }
-    console.log(iq);
     const percentile = calculatePercentile(iq)
     console.log(`User is ${user}`)
     return {iq: iq, percentile: percentile}

@@ -148,7 +148,7 @@ export async function preview() {
 
     const iq = Math.round(100 + zScore * 15 + user.starterIQ);
 
-    const percentile = calculatePercentile(iq);
+    const percentile = await calculatePercentile(iq);
     console.log(`User is ${user}`);
     return { iq: iq, percentile: percentile };
   } catch (err) {

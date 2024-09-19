@@ -1,5 +1,4 @@
 'use client'
-import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useState } from "react"
 import { useTimer } from "@/app/ui/Timer";
 import { checkTestThree } from "@/lib/actions";
@@ -101,7 +100,7 @@ export default function CriticalThink () {
                     ))}
                 <button className="text-center m-5 text-xl bg-red-900 text-white rounded-lg px-5 py-3 hover:bg-red-700"
                 type="submit"
-                >Finish ME !<MdOutlineKeyboardArrowRight className="w-6 inline" /></button>
+                >Finish ME !</button>
                 </form>
             </div>
         </>

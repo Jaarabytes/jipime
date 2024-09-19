@@ -1,6 +1,5 @@
 'use client'
 import { useState } from "react"
-import { MdOutlineKeyboardArrowRight } from "react-icons/md"
 import { useTimer } from "@/app/ui/Timer";
 import { checkTestTwo } from "@/lib/actions";
 import LoadingModal from "../Loading";
@@ -97,7 +96,7 @@ export default function Patterns () {
                     ))}
                     <button className="text-center m-5 text-xl bg-blue-900 text-white rounded-lg px-5 py-3 hover:bg-blue-700"
                     type="submit"
-                    >Next <MdOutlineKeyboardArrowRight className="w-6 inline" /></button>
+                    >Next</button>
                 </form>
             </div>
         </>

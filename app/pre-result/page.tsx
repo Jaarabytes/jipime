@@ -1,5 +1,4 @@
 'use client'
-import Upvote from "@/app/ui/home/Donate"
 import { useState, useEffect } from "react"
 import { preview } from "@/lib/actions";
 import LoadingModal from "../ui/Loading";

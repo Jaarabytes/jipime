@@ -10,7 +10,6 @@ export default function Result () {
     const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState(false);
     const [ notFound, setNotFound ] = useState(false);
-    // redirect user to home pages, if his/her user Id is missing
     const fetchUserResults = async () => {
         setLoading(true)
         try {

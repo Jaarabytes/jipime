@@ -1,7 +1,6 @@
 'use client'
 import React, { useEffect, useState, createContext, useContext, ReactNode, Component } from "react";
 
-// define types
 interface TimerContextType {
     currentTime : number,
     setCurrentTime : React.Dispatch<React.SetStateAction<number>>
@@ -12,7 +11,6 @@ const TimerContext = createContext<TimerContextType>({
     setCurrentTime: () => {}
 })
 
-// define TimerProvider Component
 interface TimerProviderProps {
     children: ReactNode;
 }

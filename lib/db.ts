@@ -1,4 +1,3 @@
-// Connects to mongo and everything mongo
 import mongoose, { Schema , model, models } from "mongoose";
 
 const uri: string = process.env.MONGO_URI as string;
@@ -11,7 +10,6 @@ interface IUser {
     testThreeScore?: Number,    
 } 
 
-// set up a mongoose schema
 const userSchema = new Schema<IUser>({
     userId : {
         type: String,
@@ -44,7 +42,6 @@ export async function connectToDatabase () {
     return mongoose.connect( uri )
 }
 
-// Set up a connection to the mongodb database
 export default async function handler () {
     if ( !uri ) {
         console.log("Mongo db uri doesn't exist");

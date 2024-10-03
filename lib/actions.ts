@@ -5,10 +5,18 @@ import { connectToDatabase, User } from './db';
 import { redirect } from 'next/navigation';
 import { erf } from 'mathjs';
 
+/*
+ * Takes in an object, picks out the values, compares them with an array of values while incrementing scores
+ * @param {userChoices} - userChoices
+ * @param {answers} - answers
+ *
+ * @returns {number} - score
+ */
+
 type userChoices = {[key: string]: string};
 type answers = string[]
 export async function checkValidity (userChoices: userChoices, answers: answers ) {
-    let score = 0;
+    let score: number = 0;
     const values = Object.values(userChoices);
     for (let i = 0; i < values.length; i++ ) {
         if ( values[i] == answers[i]) {
@@ -17,6 +25,10 @@ export async function checkValidity (userChoices: userChoices, answers: answers 
     }
     return score;
 }
+
+/* fetches the userid, stored in the cookie and if not found, creates one.
+ * @ returns {string} - userId
+ */
 
 export async function getUserId () {
   const cookieStore = cookies();
@@ -37,6 +49,13 @@ export async function getUserId () {
   }
 }
 
+/* 2 extra points for anyone within age range of <16 or 60+
+ * Oldheads and youngins get extra points since they don't do dumb IQ tests
+ * @param {range} string - user's age range
+ * @returns {void}
+ *
+ */
+
 export async function handleAge ( range: string ) {   
   try{
     console.log(`User's age range is ${range}`)
@@ -44,8 +63,7 @@ export async function handleAge ( range: string ) {
     console.log( `User's id is ${userId}`)
     await connectToDatabase();
     console.log("Successfully connected to the db")
-    let starterIQ = 0;
-    // I give bonus points to the elderly and kids since they don't do stupid IQ tests
+    let starterIQ: number = 0;
     if ( range == "16<" || range == "60+" ) {
       starterIQ = 2;
     }
@@ -57,6 +75,11 @@ export async function handleAge ( range: string ) {
   }
   redirect('/test')
 }
+
+/* Checks user's validity, stores score in db, redirects user to pre-result
+ * @param {choices} userChoices - userChoices
+ * @returns {void}
+ * */
 
 export async function checkTestOne (choices: userChoices) {
   const userId = await getUserId();
@@ -78,6 +101,11 @@ export async function checkTestOne (choices: userChoices) {
   redirect('/pre-result')
 }
 
+/* Checks user's validity, stores score in db, redirects user to test-3
+ * @param {choices} userChoices - userChoices
+ * @returns {void}
+ * */
+
 export async function checkTestTwo (choices: userChoices) {
   const userId = await getUserId();
   console.log(`User's id is ${userId} (Test two)`)
@@ -97,6 +125,11 @@ export async function checkTestTwo (choices: userChoices) {
   }
   redirect('/test-3')
 }
+
+/* Checks user's validity, stores score in db, redirects user to final result
+ * @param {choices} userChoices - userChoices
+ * @returns {void}
+ * */
 
 export async function checkTestThree (choices: userChoices) {
   const userId = await getUserId();
@@ -119,14 +152,23 @@ export async function checkTestThree (choices: userChoices) {
   redirect('/result')
 }
 
+/* Calculate user's percentile using a standard deviation of 15 
+ * @param {iq} number - User's IQ score 
+ * @returns {percentile} number - User's percentile
+ * */
+
 export async function calculatePercentile (iq: number) {
-    const mean = 100;
-    const standardDeviation = 15;
-    const zScore = (iq - mean) / standardDeviation;
-    const percentile = (1 + erf(zScore / Math.sqrt(2))) / 2 * 100;
+    const mean: number = 100;
+    const standardDeviation: number = 15;
+    const zScore: number = (iq - mean) / standardDeviation;
+    const percentile: number = (1 + erf(zScore / Math.sqrt(2))) / 2 * 100;
     console.log("The percentile is", percentile);
     return percentile;
  }
+
+/* Estimate user's IQ and percentile using test one scores
+ * @returns {IQ, percentile} Object - User's IQ, percentile
+ * */
 
 export async function preview() {
   try {
@@ -156,6 +198,10 @@ export async function preview() {
     throw err;
   }
 }
+
+/* Estimate user's IQ and percentile using all three test scores
+ * @returns {IQ, percentile} Object - User's IQ, percentile
+ * */
 
 export async function total () {
   try {

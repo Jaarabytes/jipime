@@ -1,7 +1,7 @@
 'use server'
 
 import { cookies } from 'next/headers'
-import { connectToDatabase, User } from './db';
+import { handler, User } from './db';
 import { redirect } from 'next/navigation';
 import { erf } from 'mathjs';
 
@@ -17,7 +17,7 @@ type userChoices = {[key: string]: string};
 type answers = string[]
 export async function checkValidity (userChoices: userChoices, answers: answers ) {
     let score: number = 0;
-    const values = Object.values(userChoices);
+    const values: string[] = Object.values(userChoices);
     for (let i = 0; i < values.length; i++ ) {
         if ( values[i] == answers[i]) {
             score++
@@ -38,8 +38,8 @@ export async function getUserId () {
     return userId.value;
   }
   else {
-    const userId = (Date.now().toString(36) + Math.random().toString(36));
-    console.log(`User's id using my method is ${userId}`)
+    const userId: string = (Date.now().toString(36) + Math.random().toString(36)); // creates random string based on unix timestamp
+    console.log(`User's id is ${userId}`)
     cookies().set('userId', userId, {
       httpOnly: true,
       sameSite: 'strict',
@@ -59,10 +59,9 @@ export async function getUserId () {
 export async function handleAge ( range: string ) {   
   try{
     console.log(`User's age range is ${range}`)
-    const userId = await getUserId();
+    const userId: string = await getUserId();
     console.log( `User's id is ${userId}`)
-    await connectToDatabase();
-    console.log("Successfully connected to the db")
+    await handler();
     let starterIQ: number = 0;
     if ( range == "16<" || range == "60+" ) {
       starterIQ = 2;
@@ -82,10 +81,10 @@ export async function handleAge ( range: string ) {
  * */
 
 export async function checkTestOne (choices: userChoices) {
-  const userId = await getUserId();
+  const userId: string = await getUserId();
   console.log(`User's id is ${userId} (test one)`)
-  const answers = ["False", "True", "True", "False", "False", "False", "True", "True", "False", "True"];
-  const score = await checkValidity(choices, answers);
+  const answers: string[] = ["False", "True", "True", "False", "False", "False", "True", "True", "False", "True"];
+  const score: number = await checkValidity(choices, answers);
   console.log(`User's score in test one is ${score}`)
   try {
     const user = await User.findOneAndUpdate({userId}, {testOneScore: score}, {new: true})
@@ -107,10 +106,10 @@ export async function checkTestOne (choices: userChoices) {
  * */
 
 export async function checkTestTwo (choices: userChoices) {
-  const userId = await getUserId();
+  const userId: string = await getUserId();
   console.log(`User's id is ${userId} (Test two)`)
-  const answers = ["True", "False", "False", "False", "True", "False", "True", "False", "True"];
-  const score = await checkValidity(choices, answers);
+  const answers: string[] = ["True", "False", "False", "False", "True", "False", "True", "False", "True"];
+  const score: number = await checkValidity(choices, answers);
   console.log(`User's score in test two is ${score}`)
   try {
     const user = await User.findOneAndUpdate({userId}, {testTwoScore: score}, {new: true})
@@ -132,11 +131,11 @@ export async function checkTestTwo (choices: userChoices) {
  * */
 
 export async function checkTestThree (choices: userChoices) {
-  const userId = await getUserId();
+  const userId: string = await getUserId();
   console.log(`User's id is ${userId} (Test three)`)
-  const answers = ["fleeting", "artist", "magnanimous", "sculpture", "True", "Box that has misfortunes and hope trapped inside",
+  const answers: string[] = ["fleeting", "artist", "magnanimous", "sculpture", "True", "Box that has misfortunes and hope trapped inside",
   "False", "Cultural trend", "Economy", "argue with the opposite"];
-  const score = await checkValidity(choices, answers);
+  const score: number = await checkValidity(choices, answers);
   console.log(`User's score in test three is ${score}`)
   try {
     const user = await User.findOneAndUpdate({userId}, {testThreeScore: score}, {new: true})
@@ -172,8 +171,8 @@ export async function calculatePercentile (iq: number) {
 
 export async function preview() {
   try {
-    const userId = await getUserId();
-    await connectToDatabase();
+    const userId: string = await getUserId();
+    await handler();
     const user = await User.findOne({ userId });
 
     if (!user) {
@@ -181,16 +180,16 @@ export async function preview() {
       return;
     }
     
-    const rawTotalScore = user.testOneScore;
-    const maxScore = 10;
+    const rawTotalScore: number = user.testOneScore;
+    const maxScore: number = 10;
     // Assuming 20% variability and 75% average
-    const meanRawScore = maxScore * 0.75;     
-    const sdRawScore = maxScore * 0.2; 
-    const zScore = (rawTotalScore - meanRawScore) / sdRawScore;
+    const meanRawScore: number = maxScore * 0.75;     
+    const sdRawScore: number = maxScore * 0.2; 
+    const zScore: number = (rawTotalScore - meanRawScore) / sdRawScore;
 
-    const iq = Math.round(100 + zScore * 15 + user.starterIQ);
+    const iq: number = Math.round(100 + zScore * 15 + user.starterIQ);
 
-    const percentile = await calculatePercentile(iq);
+    const percentile: number = await calculatePercentile(iq);
     console.log(`User is ${user}`);
     return { iq: iq, percentile: percentile };
   } catch (err) {
@@ -205,19 +204,19 @@ export async function preview() {
 
 export async function total () {
   try {
-    const userId = await getUserId();
-    await connectToDatabase();
+    const userId: string = await getUserId();
+    await handler();
     const user = await User.findOne({userId})
     if ( !user ) {
       console.log(`User not found`);
     }
-    const rawTotalScore = user.testOneScore + user.testTwoScore + user.testThreeScore;
-    const meanRawScore = 15;
-    const sdRawScore = 5
-    const zScore = ( rawTotalScore - meanRawScore ) / sdRawScore;
-    const iq = 100 + zScore * 15 + user.starterIQ;
+    const rawTotalScore: number = user.testOneScore + user.testTwoScore + user.testThreeScore;
+    const meanRawScore: number = 15;
+    const sdRawScore: number = 5
+    const zScore: number = ( rawTotalScore - meanRawScore ) / sdRawScore;
+    const iq: number = 100 + zScore * 15 + user.starterIQ;
 
-    const percentile = await calculatePercentile(iq)
+    const percentile: number = await calculatePercentile(iq)
     console.log(`User is ${user}`)
     return {iq: iq, percentile: percentile}
   }

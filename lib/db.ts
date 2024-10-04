@@ -42,7 +42,7 @@ export async function connectToDatabase () {
     return mongoose.connect( uri )
 }
 
-export default async function handler () {
+export async function handler () {
     if ( !uri ) {
         console.log("Mongo db uri doesn't exist");
     }

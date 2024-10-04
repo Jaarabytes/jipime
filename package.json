@@ -9,11 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "cookie": "^0.6.0",
     "dotenv": "^16.4.5",
-    "js-cookie": "^3.0.5",
     "mathjs": "^13.0.0",
-    "mongodb": "^6.7.0",
     "mongoose": "^8.4.1",
     "next": "14.2.5",
     "react": "^18",
@@ -21,8 +18,6 @@
     "react-paystack": "^5.0.0"
   },
   "devDependencies": {
-    "@types/cookie": "^0.6.0",
-    "@types/js-cookie": "^3.0.6",
     "@types/mathjs": "^9.4.2",
     "@types/node": "^20",
     "@types/react": "18.3.3",

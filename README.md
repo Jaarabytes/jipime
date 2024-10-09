@@ -1,12 +1,10 @@
-## Yes, you are high IQ bro
+## Yes, you are high IQ
 
 [Prove it](https://jipime.netlify.app)
 
 We accept pull requests and contributions for:
-- New features
 - Better questions
 - Different format of questions
-
 
 Thank you!
 
@@ -18,11 +16,9 @@ Prerequisites:
 **NOTE**: All other branches apart from **main** are discontinued
 
 Obtain the various API keys as described in the `.env.example` file.
-Run the below commands:
-```bash
-git clone https://github.com/Jaarabytes/jipime.git
-cd jipime
-npm install
+Clone the repository and install the required dependecies:
+```bash 
+npm i
 ```
 
 ## Contributions
@@ -39,3 +35,13 @@ Run the below command:
 ```bash
 docker pull jaarabytes/jipime:general
 ```
+
+## TODO
+Faster reads thus migrate towards golang and redis.
+Data that lasts longer than a day should be deleted
+
+After I get personal VPS: 
+Use a minimal and light framework
+Get rid of nextjs (It's stupid)
+Add timing component in calculations
+Record timestamp after age selected and submitting test three results

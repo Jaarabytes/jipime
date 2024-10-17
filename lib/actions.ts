@@ -25,12 +25,15 @@ const checkValidity = (userChoices: UserChoices, answers: Answers): number => {
  * @ returns {string} - userId
  */
 
+// Why is the function async?
+// Because in nextjs, server functions which are to be exported have to be async
 export async function getUserId () {
   const cookieStore = cookies()
   const userId = cookieStore.get('userId')
   if (userId) {
     return userId.value
   }
+  // generate a random string using timestamp thus id's are unique
   const newUserId = Date.now().toString(36) + Math.random().toString(36)
   cookies().set('userId', newUserId, {
     httpOnly: true,
@@ -54,8 +57,8 @@ const logError = (context: string, error: unknown) => {
 
 export const handleAge = async (range: string): Promise<void> => {
   try {
-    const userId = await getUserId()
-    const starterIQ = (range === "16<" || range === "60+") ? 2 : 0
+    const userId: string = await getUserId()
+    const starterIQ: number = (range === "16<" || range === "60+") ? 2 : 0
     await redisClient.hset(getUserKey(userId), {
       userId,
       starterIQ: starterIQ.toString()
@@ -81,8 +84,8 @@ const checkTest = async (
   answers: Answers, 
   redirectPath: string
 ): Promise<void> => {
-  const userId = await getUserId()
-  const score = checkValidity(choices, answers)
+  const userId: string = await getUserId()
+  const score: number = checkValidity(choices, answers)
   try {
     await redisClient.hset(getUserKey(userId), `test${testName}Score`, score.toString())
   } catch (error) {
@@ -121,10 +124,10 @@ export const checkTestThree = (choices: UserChoices) => checkTest(
  * */
 
 const calculatePercentile = (iq: number): number => {
-  const mean = 100
-  const standardDeviation = 15
-  const zScore = (iq - mean) / standardDeviation
-  return (1 + erf(zScore / Math.sqrt(2))) / 2 * 100
+  const mean: number = 100
+  const standardDeviation: number = 15
+  const zScore: number = (iq - mean) / standardDeviation
+  return (1 + erf(zScore / Math.sqrt(2))) / 2 * 100 // I honestly don't even know what I'm doing
 }
 
 /* Calculate user's IQ
@@ -136,7 +139,7 @@ const calculatePercentile = (iq: number): number => {
  * */
 
 const calculateIQ = (rawScore: number, meanScore: number, sdScore: number, starterIQ: number): number => {
-  const zScore = (rawScore - meanScore) / sdScore
+  const zScore: number = (rawScore - meanScore) / sdScore
   return Math.round(100 + zScore * 15 + starterIQ)
 }
 
@@ -158,11 +161,11 @@ const getUserData = async (userId: string) => {
 
 export const preview = async (): Promise<{ iq: number, percentile: number }> => {
   try {
-    const userId = await getUserId()
+    const userId: string = await getUserId()
     const user = await getUserData(userId)
-    const rawTotalScore = parseInt(user.testOneScore || '0')
-    const iq = calculateIQ(rawTotalScore, 7.5, 2, parseInt(user.starterIQ || '0'))
-    const percentile = calculatePercentile(iq)
+    const rawTotalScore: number = parseInt(user.testOneScore || '0')
+    const iq: number = calculateIQ(rawTotalScore, 7.5, 2, parseInt(user.starterIQ || '0'))
+    const percentile: number = calculatePercentile(iq)
     return { iq, percentile }
   } catch (error) {
     logError('preview', error)
@@ -176,13 +179,13 @@ export const preview = async (): Promise<{ iq: number, percentile: number }> => 
 
 export const total = async (): Promise<{ iq: number, percentile: number }> => {
   try {
-    const userId = await getUserId()
+    const userId: string = await getUserId()
     const user = await getUserData(userId)
-    const rawTotalScore = ['One', 'Two', 'Three'].reduce(
+    const rawTotalScore: number = ['One', 'Two', 'Three'].reduce(
       (sum, test) => sum + parseInt(user[`test${test}Score`] || '0'), 0
     )
-    const iq = calculateIQ(rawTotalScore, 15, 5, parseInt(user.starterIQ || '0'))
-    const percentile = calculatePercentile(iq)
+    const iq: number = calculateIQ(rawTotalScore, 15, 5, parseInt(user.starterIQ || '0'))
+    const percentile: number = calculatePercentile(iq)
     return { iq, percentile }
   } catch (error) {
     logError('total', error)

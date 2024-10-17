@@ -35,13 +35,3 @@ Run the below command:
 ```bash
 docker pull jaarabytes/jipime:general
 ```
-
-## TODO
-Faster reads thus migrate towards golang and redis.
-Data that lasts longer than a day should be deleted
-
-After I get personal VPS: 
-Use a minimal and light framework
-Get rid of nextjs (It's stupid)
-Add timing component in calculations
-Record timestamp after age selected and submitting test three results

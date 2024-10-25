@@ -2,6 +2,8 @@
 
 [Prove it](https://jipime.netlify.app)
 
+![App preview](Screenshot_20241009_155708.png)
+
 We accept pull requests and contributions for:
 - Better questions
 - Different format of questions
